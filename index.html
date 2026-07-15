@@ -616,7 +616,7 @@
     .popup-copy p { margin: 0 0 8px; color: var(--muted); font-size: .78rem; line-height: 1.42; }
     .popup-copy ul { margin: 0; padding-left: 17px; color: #405962; font-size: .75rem; }
     .popup-copy li + li { margin-top: 3px; }
-    .popup-hint { margin-top: 9px; color: var(--sea); font-size: .71rem; font-weight: 900; }
+    .popup-hint { display: none !important; }
 
     .day-marker-wrap { background: transparent; border: 0; }
     .day-marker {
@@ -5049,6 +5049,25 @@
     const serviceLayer = L.layerGroup().addTo(map);
     const serviceMarkerById = new Map();
     let servicesVisible = true;
+    let popupActionSequence = 0;
+    let activeMapPopup = null;
+
+    // Leaflet ajoute automatiquement un gestionnaire qui ouvre les popups au clic.
+    // On le retire pour gérer nous-mêmes le comportement « clic = ouvrir /
+    // second clic sur le même marqueur = fermer ».
+    function disableLeafletAutoPopup(marker) {
+      if (marker && typeof marker._openPopup === 'function') {
+        marker.off('click', marker._openPopup, marker);
+      }
+    }
+
+    function closePopupAndRestoreMap(marker) {
+      popupActionSequence += 1; // invalide les réouvertures différées encore en attente
+      map.stop();
+      marker.closePopup();
+      document.body.classList.remove('poi-popup-open');
+      window.requestAnimationFrame(() => map.invalidateSize({ pan: false }));
+    }
 
     function serviceIcon(service) {
       return L.divIcon({
@@ -5068,16 +5087,24 @@
         keepInView: true,
         closeOnClick: false
       });
+      disableLeafletAutoPopup(marker);
       marker.addTo(serviceLayer);
       serviceMarkerById.set(service.id, marker);
 
       marker.on('click', event => {
         if (event?.originalEvent) L.DomEvent.stopPropagation(event.originalEvent);
 
+        if (marker.isPopupOpen()) {
+          closePopupAndRestoreMap(marker);
+          return;
+        }
+
+        const popupToken = ++popupActionSequence;
         suppressAutomaticMapFitUntil = Date.now() + 2200;
         focusDay(service.day, false, { fitMap: false });
 
         const reopenPopup = () => {
+          if (popupToken !== popupActionSequence) return;
           if (servicesVisible && map.hasLayer(serviceLayer) && serviceLayer.hasLayer(marker)) {
             openPopupExpanded(marker);
           }
@@ -5148,10 +5175,34 @@
       });
     }
 
-    map.on('popupclose', () => {
-      if (!document.body.classList.contains('poi-popup-open')) return;
-      document.body.classList.remove('poi-popup-open');
-      window.requestAnimationFrame(() => map.invalidateSize({ pan: false }));
+    map.on('popupopen', event => {
+      activeMapPopup = event.popup;
+      if (window.matchMedia('(max-width: 1220px)').matches) {
+        document.body.classList.add('poi-popup-open');
+      }
+
+      // Nettoyage de l'ancien texte d'aide, au cas où une ancienne bulle
+      // serait encore présente dans le HTML ou conservée par le navigateur.
+      const popupElement = event.popup?.getElement?.();
+      popupElement?.querySelectorAll('.popup-hint').forEach(element => element.remove());
+      popupElement?.querySelectorAll('*').forEach(element => {
+        if (element.children.length === 0 && element.textContent.trim() === 'Cliquer sur le marqueur pour afficher et zoomer ↙') {
+          element.remove();
+        }
+      });
+    });
+
+    map.on('popupclose', event => {
+      if (activeMapPopup === event.popup) activeMapPopup = null;
+
+      // Lors d'un passage direct d'un marqueur à un autre, Leaflet ferme
+      // l'ancienne popup juste avant d'ouvrir la nouvelle. On attend une frame
+      // pour ne réduire la carte que s'il ne reste vraiment aucune bulle.
+      window.requestAnimationFrame(() => {
+        if (activeMapPopup?.isOpen?.()) return;
+        document.body.classList.remove('poi-popup-open');
+        map.invalidateSize({ pan: false });
+      });
     });
 
     function popupHtml(poi) {
@@ -5170,14 +5221,23 @@
     allPois.forEach(poi => {
       const marker = L.marker(poi.coords, { icon: markerIcon(poi.day, poi.type), riseOnHover: true, keyboard: true });
       marker.bindPopup(popupHtml(poi), { closeButton: true, maxWidth: 290, autoPanPadding: [45, 45] });
+      disableLeafletAutoPopup(marker);
       marker.addTo(map);
       allBounds.extend(poi.coords);
       markerById.set(poi.id, marker);
 
-      marker.on('click', () => {
+      marker.on('click', event => {
+        if (event?.originalEvent) L.DomEvent.stopPropagation(event.originalEvent);
+
+        if (marker.isPopupOpen()) {
+          closePopupAndRestoreMap(marker);
+          return;
+        }
+
         const compact = window.matchMedia('(max-width: 1220px)').matches;
+        const popupToken = ++popupActionSequence;
         suppressAutomaticMapFitUntil = Date.now() + 1800;
-        setActivePoi(poi.id, { pan: true, scroll: !compact, openPopup: true });
+        setActivePoi(poi.id, { pan: true, scroll: !compact, openPopup: true, popupToken });
       });
     });
 
@@ -5231,7 +5291,7 @@
     }
 
     function setActivePoi(poiId, options = {}) {
-      const { pan = false, scroll = false, openPopup = false } = options;
+      const { pan = false, scroll = false, openPopup = false, popupToken = null } = options;
       const poi = allPois.find(item => item.id === poiId);
       const marker = markerById.get(poiId);
       if (!poi || !marker) return;
@@ -5246,6 +5306,8 @@
       document.querySelectorAll('.poi-card').forEach(el => el.classList.toggle('active', el.dataset.poi === poiId));
 
       const isMobile = window.matchMedia('(max-width: 1220px)').matches;
+      const requestedPopupToken = openPopup ? (popupToken ?? ++popupActionSequence) : popupActionSequence;
+      const popupRequestIsCurrent = () => requestedPopupToken === popupActionSequence;
 
       if (pan) {
         suppressAutomaticMapFitUntil = Math.max(suppressAutomaticMapFitUntil, Date.now() + 1800);
@@ -5257,11 +5319,15 @@
           // On attend la fin du déplacement de la carte avant d'agrandir la
           // zone carte et de décaler le point vers le bas : ça évite de
           // superposer deux animations de carte en même temps.
-          map.once('moveend', () => openPopupExpanded(marker));
+          map.once('moveend', () => {
+            if (popupRequestIsCurrent()) openPopupExpanded(marker);
+          });
         } else if (isMobile) {
-          openPopupExpanded(marker);
+          if (popupRequestIsCurrent()) openPopupExpanded(marker);
         } else {
-          window.setTimeout(() => marker.openPopup(), pan ? 260 : 0);
+          window.setTimeout(() => {
+            if (popupRequestIsCurrent()) marker.openPopup();
+          }, pan ? 260 : 0);
         }
       }
       if (scroll) {
