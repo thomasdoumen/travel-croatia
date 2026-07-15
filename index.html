@@ -2382,27 +2382,6 @@
   .day-marker-wrap,
   .day-marker { cursor: pointer !important; }
 
-
-  /* Robustesse des marqueurs et popups Leaflet sur mobile */
-  .day-marker.active,
-  .service-marker.active {
-    transform: scale(1.08) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-  @media (max-width: 1220px) {
-    .leaflet-marker-pane { z-index: 620 !important; }
-    .leaflet-popup-pane { z-index: 760 !important; }
-    .leaflet-popup { pointer-events: auto !important; }
-    .day-marker-wrap,
-    .service-marker-wrap,
-    .day-marker,
-    .service-marker {
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-  }
-
 </style>
 
 <style id="v14-accordion-styles">
@@ -3457,6 +3436,22 @@
     html body.mobile-map-mode .mobile-daybar .day-link.active {
       color: #fff !important;
     }
+  }
+
+<style id="v103-mobile-popup-fit-fix">
+  /* Corrige le bug : sur mobile, la carte fixe (~300px) est trop basse pour
+     afficher la bulle d'un point d'intérêt (image + texte ≈ 320px), qui se
+     retrouvait donc coupée/invisible. On agrandit la carte le temps que la
+     bulle soit ouverte, puis on la remet à sa taille normale à la fermeture. */
+  @media (max-width: 1220px) {
+    html body.poi-popup-open .layout > .map-column,
+    html body.poi-popup-open.mobile-daybar-active .layout > .map-column,
+    html body.poi-popup-open.mobile-map-mode .layout > .map-column,
+    html body.poi-popup-open.mobile-daybar-active.mobile-map-mode .layout > .map-column {
+      height: min(64svh, 560px) !important;
+      min-height: min(64svh, 560px) !important;
+    }
+    .leaflet-popup-content { width: min(280px, calc(100vw - 60px)) !important; }
   }
 </style>
 
@@ -5049,28 +5044,37 @@
     }
 
     servicePoints.forEach(service => {
-      const marker = L.marker(service.coords, {
-        icon: serviceIcon(service),
-        riseOnHover: false,
-        keyboard: true,
-        bubblingMouseEvents: false
-      });
+      const marker = L.marker(service.coords, { icon: serviceIcon(service), riseOnHover: true, keyboard: true });
       marker.bindPopup(`<div class="service-popup"><h4>${service.icon} ${service.name}</h4><span class="service-price">${service.price}</span><p>${service.text}</p><a href="${service.url}" target="_blank" rel="noopener">Site / réservation ↗</a></div>`, {
         maxWidth: 270,
-        autoPan: false,
-        keepInView: false,
-        closeOnClick: false,
-        autoClose: true
+        autoPan: true,
+        keepInView: true,
+        closeOnClick: false
       });
       marker.addTo(serviceLayer);
       serviceMarkerById.set(service.id, marker);
 
       marker.on('click', event => {
-        if (event?.originalEvent) L.DomEvent.stop(event.originalEvent);
-        suppressAutomaticMapFitUntil = Date.now() + 2500;
+        if (event?.originalEvent) L.DomEvent.stopPropagation(event.originalEvent);
+
+        suppressAutomaticMapFitUntil = Date.now() + 2200;
         focusDay(service.day, false, { fitMap: false });
-        setActiveMapMarker(marker, 'service');
-        centerMarkerAndOpenPopup(marker, service.coords, 17);
+
+        const reopenPopup = () => {
+          if (servicesVisible && map.hasLayer(serviceLayer) && serviceLayer.hasLayer(marker)) {
+            openPopupExpanded(marker);
+          }
+        };
+
+        // Affichage immédiat, puis réouverture après le zoom : Leaflet peut fermer
+        // une popup lorsqu'une animation de carte démarre.
+        reopenPopup();
+        map.once('moveend zoomend', reopenPopup);
+        map.flyTo(service.coords, Math.max(map.getZoom(), 17), {
+          duration: .72,
+          easeLinearity: .22
+        });
+        window.setTimeout(reopenPopup, 850);
       });
     });
 
@@ -5090,62 +5094,6 @@
     let activePoi = tripDays[0].pois[0].id;
     let programmaticScroll = false;
     let suppressAutomaticMapFitUntil = 0;
-    let markerInteractionToken = 0;
-
-    function setActiveMapMarker(marker, kind = 'poi') {
-      markerById.forEach(itemMarker => {
-        itemMarker.setZIndexOffset(0);
-        const node = itemMarker.getElement()?.querySelector('.day-marker');
-        if (node) node.classList.remove('active');
-      });
-      serviceMarkerById.forEach(itemMarker => {
-        itemMarker.setZIndexOffset(0);
-        const node = itemMarker.getElement()?.querySelector('.service-marker');
-        if (node) node.classList.remove('active');
-      });
-
-      marker.setZIndexOffset(1200);
-      const selector = kind === 'service' ? '.service-marker' : '.day-marker';
-      const node = marker.getElement()?.querySelector(selector);
-      if (node) node.classList.add('active');
-    }
-
-    function centerMarkerAndOpenPopup(marker, coords, zoom = 17) {
-      const token = ++markerInteractionToken;
-      const compact = window.matchMedia('(max-width: 1220px)').matches;
-      suppressAutomaticMapFitUntil = Math.max(suppressAutomaticMapFitUntil, Date.now() + 2500);
-
-      map.stop();
-      map.closePopup();
-
-      const popup = marker.getPopup();
-      if (popup) {
-        popup.options.autoPan = false;
-        popup.options.keepInView = false;
-        popup.options.closeOnClick = false;
-      }
-
-      const reveal = () => {
-        if (token !== markerInteractionToken || !marker._map) return;
-        marker.setZIndexOffset(1200);
-        marker.openPopup();
-        window.requestAnimationFrame(() => {
-          if (token === markerInteractionToken && marker._map) marker.openPopup();
-        });
-      };
-
-      if (compact) {
-        // Sur mobile, le déplacement instantané évite que Safari/Leaflet ne
-        // supprime temporairement le marqueur et ne referme la popup.
-        map.setView(coords, zoom, { animate: false });
-        window.requestAnimationFrame(reveal);
-        window.setTimeout(reveal, 80);
-      } else {
-        map.once('moveend', reveal);
-        map.flyTo(coords, Math.max(map.getZoom(), zoom), { duration: .65, easeLinearity: .22 });
-        window.setTimeout(reveal, 800);
-      }
-    }
 
     function markerIcon(day, type, isActive = false) {
       return L.divIcon({
@@ -5156,6 +5104,25 @@
         popupAnchor: [0, -20]
       });
     }
+
+    // Sur mobile, la carte est basse (~300px) : on l'agrandit juste avant
+    // d'ouvrir une bulle pour qu'elle ne soit plus coupée, puis on invalide
+    // la taille Leaflet pour qu'il recalcule correctement le positionnement.
+    function openPopupExpanded(marker) {
+      const isMobile = window.matchMedia('(max-width: 1220px)').matches;
+      if (!isMobile) { marker.openPopup(); return; }
+      document.body.classList.add('poi-popup-open');
+      window.requestAnimationFrame(() => {
+        map.invalidateSize({ pan: false });
+        marker.openPopup();
+      });
+    }
+
+    map.on('popupclose', () => {
+      if (!document.body.classList.contains('poi-popup-open')) return;
+      document.body.classList.remove('poi-popup-open');
+      window.requestAnimationFrame(() => map.invalidateSize({ pan: false }));
+    });
 
     function popupHtml(poi) {
       return `
@@ -5172,28 +5139,15 @@
     }
 
     allPois.forEach(poi => {
-      const marker = L.marker(poi.coords, {
-        icon: markerIcon(poi.day, poi.type),
-        riseOnHover: false,
-        keyboard: true,
-        bubblingMouseEvents: false
-      });
-      marker.bindPopup(popupHtml(poi), {
-        closeButton: true,
-        maxWidth: 290,
-        autoPan: false,
-        keepInView: false,
-        closeOnClick: false,
-        autoClose: true
-      });
+      const marker = L.marker(poi.coords, { icon: markerIcon(poi.day, poi.type), riseOnHover: true, keyboard: true });
+      marker.bindPopup(popupHtml(poi), { closeButton: true, maxWidth: 290, autoPanPadding: [45, 45] });
       marker.addTo(map);
       allBounds.extend(poi.coords);
       markerById.set(poi.id, marker);
 
-      marker.on('click', event => {
-        if (event?.originalEvent) L.DomEvent.stop(event.originalEvent);
+      marker.on('click', () => {
         const compact = window.matchMedia('(max-width: 1220px)').matches;
-        suppressAutomaticMapFitUntil = Date.now() + 2500;
+        suppressAutomaticMapFitUntil = Date.now() + 1800;
         setActivePoi(poi.id, { pan: true, scroll: !compact, openPopup: true });
       });
     });
@@ -5256,15 +5210,18 @@
       activePoi = poiId;
       if (activeDay !== poi.day) focusDay(poi.day, false, { fitMap: false });
 
-      // Ne jamais remplacer l'icône Leaflet au clic : sur certains mobiles,
-      // setIcon retire brièvement le marqueur et interrompt l'ouverture de la popup.
-      setActiveMapMarker(marker, 'poi');
+      allPois.forEach(item => {
+        const itemMarker = markerById.get(item.id);
+        if (itemMarker) itemMarker.setIcon(markerIcon(item.day, item.type, item.id === poiId));
+      });
       document.querySelectorAll('.poi-card').forEach(el => el.classList.toggle('active', el.dataset.poi === poiId));
 
-      if (pan || openPopup) {
-        centerMarkerAndOpenPopup(marker, poi.coords, 17);
+      if (pan) {
+        suppressAutomaticMapFitUntil = Math.max(suppressAutomaticMapFitUntil, Date.now() + 1800);
+        map.stop();
+        map.flyTo(poi.coords, 17, { duration: .72, easeLinearity: .22 });
       }
-
+      if (openPopup) window.setTimeout(() => openPopupExpanded(marker), pan ? 260 : 0);
       if (scroll) {
         const target = document.getElementById(poiId);
         if (target) {
