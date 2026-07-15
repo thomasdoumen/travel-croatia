@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0b5568">
+  <meta name="theme-color" content="#087187">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <!-- V17: mobile fixed map + compressed embedded images -->
   <title>Roadbook Zadar</title>
@@ -29,9 +29,9 @@
       --line: rgba(15, 58, 72, .13);
       --shadow: 0 18px 48px rgba(18, 54, 67, .12);
       --shadow-soft: 0 10px 28px rgba(18, 54, 67, .08);
-      --r-xl: 26px;
-      --r-lg: 20px;
-      --r-md: 14px;
+      --r-xl: 16px;
+      --r-lg: 12px;
+      --r-md: 10px;
       --top-gap: 92px;
       --day1: #d96942;
       --day2: #c98327;
@@ -80,7 +80,7 @@
       margin-bottom: 18px;
       padding: 15px 17px;
       border: 1px solid rgba(255, 255, 255, .7);
-      border-radius: 24px;
+      border-radius: 18px;
       background: rgba(248, 246, 240, .88);
       box-shadow: var(--shadow-soft);
       backdrop-filter: blur(18px);
@@ -99,7 +99,7 @@
       height: 42px;
       display: grid;
       place-items: center;
-      border-radius: 14px;
+      border-radius: 10px;
       background: linear-gradient(145deg, var(--sea), #2e9db5);
       color: #fff;
       font-size: 1.25rem;
@@ -254,7 +254,7 @@
       margin-top: 18px;
       padding: 14px 15px;
       border: 1px solid rgba(214,107,68,.16);
-      border-radius: 17px;
+      border-radius: 10px;
       background: rgba(255, 247, 238, .84);
       color: #5d534a;
       font-size: .88rem;
@@ -273,7 +273,7 @@
       min-width: 0;
       padding: 10px 11px;
       border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: 10px;
       background: rgba(255,255,255,.76);
       transition: transform .18s ease, border-color .18s ease, background .18s ease;
     }
@@ -370,7 +370,7 @@
       gap: 14px;
       padding: 12px;
       border: 1px solid var(--line);
-      border-radius: 17px;
+      border-radius: 10px;
       background: #fff;
       transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
       cursor: pointer;
@@ -381,7 +381,7 @@
       width: 112px;
       height: 112px;
       overflow: hidden;
-      border-radius: 14px;
+      border-radius: 10px;
       background: linear-gradient(145deg, var(--sea-soft), var(--sand));
     }
     .poi-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -459,7 +459,7 @@
     .detail-section {
       padding: 14px;
       border: 1px solid var(--line);
-      border-radius: 17px;
+      border-radius: 10px;
       background: linear-gradient(145deg, rgba(255,255,255,.98), rgba(244,249,249,.84));
     }
     .detail-title {
@@ -476,7 +476,7 @@
       min-width: 0;
       padding: 11px;
       border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: 10px;
       background: #fff;
     }
     .info-card-head { display: flex; align-items: flex-start; gap: 9px; }
@@ -524,7 +524,7 @@
       overflow: hidden;
       text-align: left;
       border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: 10px;
       background: #fff;
       color: var(--ink);
       cursor: pointer;
@@ -816,7 +816,84 @@
       .map-buttons .btn { font-size: .73rem; }
     }
 
-    @media print {
+  
+
+  /* Raffinement UI supplémentaire */
+  .panel { border-radius: 10px; }
+  .hero { border-radius: 10px; }
+  .alert { border-radius: 12px; }
+  .stat, .meta, .detail-section, .info-card, .rail-day, .poi-card, .booking-card, .booking-item, .booking-item-content { border-radius: 10px; }
+  .poi-media { border-radius: 10px; }
+  .mini-link { border-radius: 7px; }
+  .accordion-summary, .booking-item summary, .booking-summary { border-radius: 12px; }
+  .day-card { border-radius: 12px; }
+  .day-head { padding: 18px 18px 14px 20px; }
+
+  .day-switch-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .day-switch-card {
+    min-height: 132px;
+    border-radius: 12px;
+    box-shadow: 0 10px 24px rgba(18,54,67,.09);
+  }
+  .day-switch-card:hover,
+  .day-switch-card.active {
+    box-shadow: 0 16px 30px rgba(18,54,67,.14);
+  }
+  .day-switch-card img {
+    filter: blur(1.8px) brightness(.7) saturate(.9);
+    transform: scale(1.04);
+  }
+  .day-switch-card::after {
+    background:
+      linear-gradient(180deg, rgba(5,18,24,.26) 0%, rgba(5,18,24,.34) 30%, rgba(5,18,24,.76) 100%),
+      linear-gradient(135deg, color-mix(in srgb, var(--day-color) 78%, transparent) 0%, rgba(7,50,61,.32) 58%, rgba(7,50,61,.10) 100%);
+  }
+  .day-switch-copy {
+    min-height: 132px;
+    gap: 5px;
+    padding: 14px;
+  }
+  .day-switch-lodging {
+    color: rgba(255,255,255,.9);
+    font-size: .66rem;
+    letter-spacing: .09em;
+  }
+  .day-switch-date {
+    font-size: .96rem;
+    line-height: 1.16;
+    text-shadow: 0 1px 3px rgba(0,0,0,.26);
+  }
+  .day-switch-theme {
+    padding: 5px 10px;
+    background: rgba(255,255,255,.14);
+    border-color: rgba(255,255,255,.22);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+  }
+  .day-switch-title {
+    font-size: .74rem;
+    color: rgba(255,255,255,.9);
+  }
+
+  @media (min-width: 1200px) {
+    .day-switch-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  }
+  @media (min-width: 860px) and (max-width: 1199px) {
+    .day-switch-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 859px) {
+    .day-switch-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .day-switch-card,
+    .day-switch-copy { min-height: 118px; }
+  }
+  @media (max-width: 520px) {
+    .day-switch-grid { grid-template-columns: 1fr; }
+  }
+
+
+  @media print {
       .topbar, .map-column, .day-rail-column, .day-nav, .poi-actions, .btn { display: none !important; }
       .layout { display: block; }
       .panel, .day-card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
@@ -1060,7 +1137,7 @@
       }
 
       .day-rail {
-        border-radius: 22px;
+        border-radius: 12px;
       }
 
       .rail-head {
@@ -1276,7 +1353,7 @@
         padding: 6px;
         overflow: hidden;
         border-left: 3px solid transparent;
-        border-radius: 14px;
+        border-radius: 10px;
       }
 
       .rail-thumb {
@@ -1422,7 +1499,7 @@
       position: relative;
       min-height: 178px;
       overflow: hidden;
-      border-radius: 14px;
+      border-radius: 10px;
       background: #0d252e;
       isolation: isolate;
     }
@@ -1647,14 +1724,14 @@
     }
     .map-panel, body.mobile-map-mode .map-panel {
       height: 100%; min-height: 0; grid-template-rows: 32px minmax(0, 1fr);
-      border-radius: 14px; box-shadow: 0 10px 24px rgba(15,58,72,.15);
+      border-radius: 10px; box-shadow: 0 10px 24px rgba(15,58,72,.15);
     }
     .map-toolbar { min-height: 32px; padding: 5px 9px; border-bottom: 1px solid var(--line); align-items: center; }
     .map-toolbar > div:first-child { min-width: 0; }
     .map-toolbar strong { font-size: .76rem; line-height: 1; white-space: nowrap; }
     .map-toolbar span, .map-buttons, .map-footer { display: none !important; }
     #map, body.mobile-map-mode #map { width: 100%; height: 100% !important; min-height: 0 !important; }
-    .hero { margin-bottom: 10px; padding: 16px 14px; border-radius: 17px; }
+    .hero { margin-bottom: 10px; padding: 16px 14px; border-radius: 10px; }
     .hero .eyebrow { padding: 6px 8px; font-size: .68rem; }
     .hero h1 { margin-top: 9px; font-size: clamp(1.35rem, 7vw, 1.8rem); }
     .hero > p { font-size: .82rem; line-height: 1.45; }
@@ -1668,6 +1745,642 @@
     .map-panel { grid-template-rows: 29px minmax(0, 1fr); }
     .map-toolbar strong { font-size: .7rem; }
   }
+
+
+  
+  .panel, .hero, .day-card, .booking-summary, .accordion-summary, .booking-item summary { border-radius: 10px !important; }
+  .poi-card, .booking-item, .booking-item-content, .detail-section, .meta, .stat, .info-card, .rail-day, .alert { border-radius: 8px !important; }
+  .poi-media, .mini-link { border-radius: 8px !important; }
+  .topbar { border-radius: 12px !important; }
+
+  /* Force grille des jours : 5 cartes par ligne sur desktop */
+  .day-switch-grid {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+  .day-switch-card {
+    min-height: 114px !important;
+    border-radius: 10px !important;
+  }
+  .day-switch-copy {
+    min-height: 114px !important;
+    padding: 12px !important;
+    gap: 4px !important;
+  }
+  .day-switch-date { font-size: .88rem !important; line-height: 1.14 !important; }
+  .day-switch-theme { font-size: .72rem !important; padding: 5px 9px !important; }
+  .day-switch-title { font-size: .72rem !important; }
+  .day-switch-lodging { font-size: .62rem !important; }
+
+  @media (max-width: 1199px) {
+    .day-switch-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+  }
+  @media (max-width: 859px) {
+    .day-switch-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    .day-switch-card,
+    .day-switch-copy { min-height: 108px !important; }
+  }
+  @media (max-width: 520px) {
+    .day-switch-grid { grid-template-columns: 1fr !important; }
+  }
+
+
+  /* --- Mobile UX refinement: bases compactes + barre jours fixe --- */
+  .stay-plan {
+    margin: 7px 0 0;
+    color: var(--muted);
+    font-size: .72rem;
+    line-height: 1.35;
+  }
+
+  .mobile-daybar { display: none; }
+
+  @media (max-width: 760px) {
+    .hero { padding: 18px 14px !important; }
+    .hero h1 { margin: 12px 0 8px; font-size: clamp(1.7rem, 5.8vw, 2.15rem); }
+    .hero > p { font-size: .92rem; line-height: 1.45; }
+
+    .stay-route {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 7px !important;
+      padding: 8px !important;
+      margin-top: 18px !important;
+    }
+    .stay-arrow { display: none !important; }
+    .stay-stop {
+      padding: 9px 8px !important;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+    }
+    .stay-stop > span {
+      position: static !important;
+      width: 22px;
+      height: 22px;
+      margin: 0 0 3px;
+      font-size: .56rem;
+    }
+    .stay-stop small { font-size: .54rem !important; line-height: 1.2; letter-spacing: .04em; }
+    .stay-stop strong { margin-top: 0 !important; font-size: .84rem !important; line-height: 1.15; }
+    .stay-stop em { margin-top: 0 !important; font-size: .68rem !important; }
+    .stay-plan { font-size: .60rem !important; line-height: 1.28 !important; margin-top: 3px !important; }
+
+    .mobile-daybar {
+      display: block;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1200;
+      padding: 7px 10px 9px;
+      border-bottom: 1px solid rgba(8,113,135,.12);
+      background: rgba(248,246,240,.96);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 24px rgba(18,54,67,.08);
+      transform: translateY(-120%);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+    body.mobile-daybar-active .mobile-daybar {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .mobile-daybar-title {
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: .63rem;
+      font-weight: 900;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .mobile-daybar-scroll {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: max-content;
+      gap: 7px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scroll-snap-type: x proximity;
+    }
+    .mobile-daybar-scroll::-webkit-scrollbar { display: none; }
+    .mobile-daybar .day-link {
+      scroll-snap-align: start;
+      padding: 8px 11px !important;
+      border-radius: 999px !important;
+      background: rgba(255,255,255,.92) !important;
+      white-space: nowrap;
+    }
+    .mobile-daybar .day-link strong { font-size: .78rem !important; }
+    .mobile-daybar .day-link span { display: none !important; }
+    .mobile-daybar .day-link.active { background: var(--sea) !important; border-color: var(--sea) !important; }
+    .mobile-daybar .day-link.active strong { color: #fff !important; }
+
+    .topbar { transition: transform .2s ease, opacity .2s ease; }
+    body.mobile-daybar-active .topbar {
+      transform: translateY(-115%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    body.mobile-daybar-active .map-column,
+    body.mobile-daybar-active.mobile-map-mode .map-column {
+      inset: 66px 8px 8px !important;
+    }
+
+    .day-card { scroll-margin-top: 88px !important; }
+    .days { margin-top: 4px; }
+  }
+
+
+  /* --- Ajustements mobile finaux : bases compactes + jours à gauche sur la carte --- */
+  @media (max-width: 760px) {
+    .stay-stop strong,
+    .stay-stop em {
+      display: inline !important;
+      white-space: nowrap;
+      vertical-align: baseline;
+    }
+    .stay-stop em {
+      margin-left: 6px !important;
+      font-size: .66rem !important;
+    }
+
+    .mobile-daybar {
+      top: 74px !important;
+      left: 4px !important;
+      right: auto !important;
+      width: 52px !important;
+      padding: 8px 4px !important;
+      border-radius: 0 12px 12px 0 !important;
+      border: 1px solid rgba(8,113,135,.12) !important;
+      border-left: 0 !important;
+      box-shadow: 0 10px 22px rgba(18,54,67,.10) !important;
+    }
+    .mobile-daybar-title {
+      margin-bottom: 6px !important;
+      text-align: center;
+      font-size: .56rem !important;
+      line-height: 1.15;
+    }
+    .mobile-daybar-scroll {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 6px !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      max-height: calc(100vh - 150px);
+      padding-right: 1px;
+      scroll-snap-type: y proximity !important;
+    }
+    .mobile-daybar .day-link {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-width: 0 !important;
+      padding: 8px 6px !important;
+      border-radius: 12px !important;
+      text-align: center !important;
+    }
+    .mobile-daybar .day-link strong {
+      display: block !important;
+      font-size: .72rem !important;
+      line-height: 1.1;
+    }
+
+    .map-column .leaflet-top.leaflet-right .leaflet-control-zoom {
+      margin-top: 48px !important;
+    }
+  }
+
+
+  /* --- Correctifs mobile carte plein écran + barre jours au-dessus --- */
+  @media (max-width: 760px) {
+    .topbar { display: none !important; }
+    .page { padding: 0 !important; }
+    .layout { gap: 0 !important; }
+    .itinerary { padding: 10px 10px 24px; }
+
+    .mobile-daybar {
+      top: 10px !important;
+      left: 0 !important;
+      right: auto !important;
+      width: 58px !important;
+      z-index: 2500 !important;
+      transform: translateX(-120%) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      border-radius: 0 12px 12px 0 !important;
+      background: rgba(248,246,240,.96) !important;
+      box-shadow: 0 10px 24px rgba(18,54,67,.18) !important;
+    }
+    body.mobile-daybar-active .mobile-daybar,
+    body.mobile-map-mode .mobile-daybar {
+      transform: translateX(0) !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+    .mobile-daybar-title { font-size: .56rem !important; }
+    .mobile-daybar-scroll {
+      max-height: calc(100dvh - 92px) !important;
+      overflow-y: auto !important;
+    }
+    .mobile-daybar .day-link {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,.96) !important;
+    }
+
+    .map-column,
+    body.mobile-map-mode .map-column {
+      grid-column: 1 !important;
+      grid-row: 1 !important;
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100dvh !important;
+      min-height: 100dvh !important;
+      z-index: 1400 !important;
+      display: none;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    body.mobile-map-mode .map-column { display: block !important; }
+    body.mobile-map-mode .itinerary { display: none !important; }
+
+    .map-panel {
+      height: 100dvh !important;
+      min-height: 100dvh !important;
+      width: 100vw !important;
+      border-radius: 0 !important;
+      border: 0 !important;
+      overflow: hidden !important;
+      box-shadow: none !important;
+    }
+    .map-toolbar {
+      padding: 12px 14px 10px !important;
+      border-radius: 0 !important;
+    }
+    #map {
+      width: 100vw !important;
+      min-height: calc(100dvh - 134px) !important;
+      border-radius: 0 !important;
+    }
+    .map-footer {
+      padding: 8px 12px 10px !important;
+      border-radius: 0 !important;
+    }
+
+    .map-column .leaflet-top.leaflet-right {
+      top: 10px !important;
+      right: 10px !important;
+      z-index: 1800 !important;
+    }
+    .map-column .leaflet-top.leaflet-right .leaflet-control-layers {
+      margin-top: 0 !important;
+    }
+    .map-column .leaflet-top.leaflet-right .leaflet-control-zoom {
+      margin-top: 52px !important;
+    }
+    .map-column .leaflet-left,
+    .map-column .leaflet-right { z-index: 1800 !important; }
+  }
+
+
+  /* Correctif définitif : navigation J1–J10 réellement superposée à la carte */
+  @media (max-width: 760px) {
+    .mobile-daybar {
+      position: fixed !important;
+      top: 54px !important;
+      left: 6px !important;
+      right: auto !important;
+      bottom: auto !important;
+      width: 44px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      z-index: 10000 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      isolation: isolate;
+    }
+    body.mobile-daybar-active .mobile-daybar,
+    body.mobile-map-mode .mobile-daybar {
+      transform: none !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+    .mobile-daybar-title {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 42px !important;
+      height: 24px !important;
+      margin: 0 0 5px !important;
+      padding: 0 !important;
+      border: 1px solid rgba(8,113,135,.15);
+      border-radius: 8px !important;
+      background: rgba(255,255,255,.94) !important;
+      color: var(--sea) !important;
+      box-shadow: 0 4px 12px rgba(18,54,67,.12);
+      font-size: .55rem !important;
+      font-weight: 950 !important;
+      line-height: 1 !important;
+      letter-spacing: .04em !important;
+      white-space: nowrap;
+    }
+    .mobile-daybar-scroll {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      width: 44px !important;
+      max-height: calc(100dvh - 88px) !important;
+      gap: 5px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      overflow-x: visible !important;
+      overflow-y: auto !important;
+      scrollbar-width: none;
+    }
+    .mobile-daybar-scroll::-webkit-scrollbar { display: none !important; }
+    .mobile-daybar .day-link {
+      box-sizing: border-box !important;
+      display: grid !important;
+      place-items: center !important;
+      flex: 0 0 auto !important;
+      width: 42px !important;
+      min-width: 42px !important;
+      max-width: 42px !important;
+      height: 36px !important;
+      min-height: 36px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      overflow: hidden !important;
+      border: 1px solid rgba(8,113,135,.17) !important;
+      border-radius: 10px !important;
+      background: rgba(255,255,255,.96) !important;
+      box-shadow: 0 5px 13px rgba(18,54,67,.14) !important;
+      transform: none !important;
+      text-decoration: none !important;
+    }
+    .mobile-daybar .day-link strong {
+      display: block !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      color: var(--sea) !important;
+      font-size: .74rem !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+    }
+    .mobile-daybar .day-short { display: inline !important; }
+    .mobile-daybar .day-long,
+    .mobile-daybar .day-link > span { display: none !important; }
+    .mobile-daybar .day-link.active {
+      border-color: var(--sea) !important;
+      background: var(--sea) !important;
+      box-shadow: 0 6px 16px rgba(8,113,135,.28) !important;
+    }
+    .mobile-daybar .day-link.active strong { color: #fff !important; }
+
+    .map-column,
+    body.mobile-map-mode .map-column,
+    .map-panel,
+    #map {
+      left: 0 !important;
+      margin-left: 0 !important;
+      padding-left: 0 !important;
+    }
+    .map-column { z-index: 1400 !important; }
+    .map-panel { position: relative; z-index: 1 !important; }
+    #map { position: relative; z-index: 1 !important; }
+    .leaflet-pane,
+    .leaflet-top,
+    .leaflet-bottom { z-index: auto; }
+    .map-column .leaflet-control-container { position: relative; z-index: 1500 !important; }
+  }
+
+
+  /* ===== Correctif autoritaire mobile/tablette : carte à x=0/y=0 + J1–J10 visibles ===== */
+  @media (max-width: 1220px) {
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow-x: hidden !important;
+    }
+
+    .topbar { display: none !important; }
+    .page {
+      width: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .layout {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) !important;
+      grid-template-rows: auto auto !important;
+      gap: 0 !important;
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .map-column,
+    body.mobile-map-mode .map-column {
+      display: block !important;
+      grid-column: 1 !important;
+      grid-row: 1 !important;
+      position: sticky !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      inset: auto 0 auto 0 !important;
+      width: 100% !important;
+      max-width: none !important;
+      height: clamp(220px, 34svh, 330px) !important;
+      min-height: 220px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      z-index: 3000 !important;
+      transform: none !important;
+    }
+
+    .map-panel,
+    body.mobile-map-mode .map-panel {
+      display: grid !important;
+      grid-template-rows: 34px minmax(0, 1fr) !important;
+      width: 100% !important;
+      max-width: none !important;
+      height: 100% !important;
+      min-height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: 0 8px 20px rgba(15,58,72,.14) !important;
+      overflow: hidden !important;
+    }
+    .map-toolbar {
+      min-height: 34px !important;
+      padding: 7px 12px !important;
+      border-radius: 0 !important;
+    }
+    .map-toolbar strong { font-size: .76rem !important; }
+    .map-toolbar span,
+    .map-buttons,
+    .map-footer { display: none !important; }
+    #map,
+    body.mobile-map-mode #map {
+      display: block !important;
+      position: relative !important;
+      width: 100% !important;
+      max-width: none !important;
+      height: 100% !important;
+      min-height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      left: 0 !important;
+      border-radius: 0 !important;
+      z-index: 1 !important;
+    }
+
+    .itinerary,
+    body.mobile-map-mode .itinerary {
+      display: block !important;
+      grid-column: 1 !important;
+      grid-row: 2 !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+      padding: 10px 8px 24px !important;
+    }
+
+    .mobile-daybar,
+    body.mobile-daybar-active .mobile-daybar,
+    body.mobile-map-mode .mobile-daybar {
+      display: block !important;
+      position: fixed !important;
+      top: 42px !important;
+      left: 4px !important;
+      right: auto !important;
+      bottom: auto !important;
+      width: 46px !important;
+      max-width: 46px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      z-index: 20000 !important;
+      transform: none !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      isolation: isolate !important;
+    }
+    .mobile-daybar-title {
+      display: grid !important;
+      place-items: center !important;
+      width: 44px !important;
+      height: 26px !important;
+      margin: 0 0 5px !important;
+      padding: 0 !important;
+      border: 1px solid rgba(8,113,135,.18) !important;
+      border-radius: 8px !important;
+      background: rgba(255,255,255,.97) !important;
+      color: var(--sea) !important;
+      font-size: .55rem !important;
+      font-weight: 950 !important;
+      line-height: 1 !important;
+      letter-spacing: .035em !important;
+      text-align: center !important;
+      box-shadow: 0 4px 12px rgba(18,54,67,.16) !important;
+    }
+    .mobile-daybar-scroll {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 5px !important;
+      width: 46px !important;
+      max-height: calc(34svh - 36px) !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      scrollbar-width: none !important;
+    }
+    .mobile-daybar-scroll::-webkit-scrollbar { display: none !important; }
+    .mobile-daybar .day-link {
+      appearance: none !important;
+      display: grid !important;
+      place-items: center !important;
+      flex: 0 0 34px !important;
+      width: 44px !important;
+      min-width: 44px !important;
+      max-width: 44px !important;
+      height: 34px !important;
+      min-height: 34px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: visible !important;
+      border: 1px solid rgba(8,113,135,.18) !important;
+      border-radius: 9px !important;
+      background: rgba(255,255,255,.97) !important;
+      color: var(--sea) !important;
+      font: 900 .76rem/1 Inter, ui-sans-serif, system-ui, sans-serif !important;
+      text-align: center !important;
+      text-indent: 0 !important;
+      white-space: nowrap !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      box-shadow: 0 4px 11px rgba(18,54,67,.15) !important;
+      cursor: pointer !important;
+    }
+    .mobile-daybar .day-link.active {
+      border-color: var(--sea) !important;
+      background: var(--sea) !important;
+      color: #fff !important;
+      box-shadow: 0 5px 14px rgba(8,113,135,.3) !important;
+    }
+
+    .map-column .leaflet-top.leaflet-right {
+      top: 8px !important;
+      right: 8px !important;
+      z-index: 6000 !important;
+    }
+    .map-column .leaflet-control-layers { margin-top: 0 !important; }
+    .map-column .leaflet-control-zoom { margin-top: 48px !important; }
+    .map-column .leaflet-control-container,
+    .map-column .leaflet-top,
+    .map-column .leaflet-bottom { z-index: 6000 !important; }
+  }
+
+  @media (max-width: 520px) {
+    .map-column,
+    body.mobile-map-mode .map-column {
+      height: clamp(215px, 34svh, 290px) !important;
+      min-height: 215px !important;
+    }
+    .mobile-daybar-scroll {
+      max-height: calc(34svh - 36px) !important;
+    }
+  }
+
+
+  /* Marqueurs de la carte : interaction uniquement au clic */
+  .day-marker-wrap,
+  .day-marker { cursor: pointer !important; }
 
 </style>
 
@@ -1897,6 +2610,835 @@
   }
 </style>
 
+
+<style id="v18-design-system">
+  :root {
+    --ink: #183940;
+    --muted: #66797e;
+    --paper: #fffefb;
+    --bg: #f7f3eb;
+    --sea: #087187;
+    --sea-dark: #075364;
+    --sea-soft: #e4f2f3;
+    --sand: #e8d7b7;
+    --coral: #d96b46;
+    --line: #dde5e3;
+    --line-strong: #cbd8d6;
+    --shadow-sm: 0 3px 10px rgba(24,57,64,.055);
+    --shadow-md: 0 10px 28px rgba(24,57,64,.085);
+    --shadow-lg: 0 22px 55px rgba(24,57,64,.12);
+    --r-sm: 10px;
+    --r-md: 14px;
+    --r-lg: 20px;
+    --r-xl: 28px;
+  }
+
+  body {
+    background:
+      radial-gradient(circle at 8% -8%, rgba(8,113,135,.11), transparent 30rem),
+      linear-gradient(180deg, #faf7f0 0%, var(--bg) 42%, #f4f1ea 100%);
+  }
+
+  .panel {
+    border: 1px solid rgba(203,216,214,.82);
+    border-radius: var(--r-xl);
+    background: rgba(255,254,251,.96);
+    box-shadow: var(--shadow-md);
+    backdrop-filter: none;
+  }
+
+  .topbar {
+    border-color: rgba(255,255,255,.82);
+    border-radius: var(--r-lg);
+    background: rgba(250,248,243,.92);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .brand-mark {
+    border-radius: var(--r-md);
+    background: linear-gradient(145deg, var(--sea), #36a2b6);
+    box-shadow: 0 8px 20px rgba(8,113,135,.2);
+  }
+
+  .btn {
+    min-height: 38px;
+    border-color: var(--line);
+    border-radius: var(--r-sm);
+    background: #fffefb;
+    box-shadow: none;
+  }
+  .btn:hover { border-color: var(--line-strong); box-shadow: var(--shadow-sm); }
+  .btn.primary { background: var(--sea); }
+
+  .hero {
+    padding: clamp(24px, 3vw, 38px);
+    background:
+      linear-gradient(118deg, rgba(255,254,251,.99) 0%, rgba(243,250,249,.96) 100%);
+  }
+  .hero::after {
+    width: 420px;
+    height: 420px;
+    right: -165px;
+    top: -235px;
+    background: radial-gradient(circle, rgba(8,113,135,.16), transparent 68%);
+  }
+  .eyebrow {
+    padding: 7px 10px;
+    border: 1px solid rgba(8,113,135,.1);
+    background: var(--sea-soft);
+    letter-spacing: .075em;
+  }
+  .hero h1 { max-width: 780px; margin-top: 17px; }
+  .hero > p { max-width: 760px; font-size: 1.01rem; }
+
+  .stay-route {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);
+    gap: 10px;
+    align-items: center;
+    margin-top: 24px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    background: rgba(255,255,255,.74);
+  }
+  .stay-stop {
+    position: relative;
+    min-width: 0;
+    padding: 13px 14px 13px 48px;
+    border-radius: var(--r-md);
+    background: rgba(255,254,251,.88);
+  }
+  .stay-stop > span {
+    position: absolute;
+    left: 13px;
+    top: 14px;
+    display: grid;
+    place-items: center;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: var(--sea);
+    color: #fff;
+    font-size: .65rem;
+    font-weight: 900;
+  }
+  .stay-stop small { display: block; color: var(--muted); font-size: .67rem; font-weight: 800; letter-spacing: .055em; text-transform: uppercase; }
+  .stay-stop strong { display: block; margin-top: 3px; font-size: 1rem; }
+  .stay-stop em { display: block; margin-top: 1px; color: var(--sea); font-size: .78rem; font-style: normal; font-weight: 850; }
+  .stay-arrow { color: #9cb1b3; font-size: 1.15rem; font-weight: 900; }
+
+  .alert {
+    border-color: rgba(217,107,70,.18);
+    border-radius: var(--r-md);
+    background: #fff8ef;
+  }
+
+  .booking-tools { margin-bottom: 18px; padding: 0; overflow: hidden; }
+  .booking-accordion > summary { list-style: none; }
+  .booking-accordion > summary::-webkit-details-marker,
+  .booking-item > summary::-webkit-details-marker { display: none; }
+  .booking-summary {
+    display: grid;
+    grid-template-columns: 42px minmax(0,1fr) auto 30px;
+    gap: 12px;
+    align-items: center;
+    min-height: 78px;
+    padding: 15px 18px;
+    cursor: pointer;
+    background: linear-gradient(120deg, #fffefb, #f2f8f7);
+  }
+  .booking-summary-icon {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: var(--r-md);
+    background: var(--sea);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 950;
+  }
+  .booking-summary-copy { min-width: 0; }
+  .booking-summary-copy strong { display: block; font-size: 1rem; }
+  .booking-summary-copy small { display: block; margin-top: 3px; color: var(--muted); font-size: .75rem; }
+  .booking-summary-total { color: var(--muted); font-size: .72rem; text-align: right; }
+  .booking-summary-total b { display: block; margin-top: 2px; color: var(--ink); font-size: .88rem; }
+  .booking-summary-arrow,
+  .booking-item-arrow {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(8,113,135,.08);
+    color: var(--sea);
+    transition: transform .2s ease;
+  }
+  .booking-accordion[open] .booking-summary-arrow,
+  .booking-item[open] .booking-item-arrow { transform: rotate(180deg); }
+  .booking-content { padding: 0 18px 18px; border-top: 1px solid var(--line); }
+  .booking-intro { margin: 14px 0 10px; color: var(--muted); font-size: .78rem; }
+  .booking-list { overflow: hidden; border: 1px solid var(--line); border-radius: var(--r-md); background: #fff; }
+  .booking-item + .booking-item { border-top: 1px solid var(--line); }
+  .booking-item > summary {
+    display: grid;
+    grid-template-columns: 34px minmax(0,1fr) auto 84px 26px;
+    gap: 10px;
+    align-items: center;
+    min-height: 62px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background .18s ease;
+  }
+  .booking-item > summary:hover { background: #f7faf9; }
+  .booking-item-icon { font-size: 1.05rem; text-align: center; }
+  .booking-item-main { min-width: 0; }
+  .booking-item-main strong { display: block; font-size: .82rem; }
+  .booking-item-main small { display: block; margin-top: 2px; color: var(--muted); font-size: .68rem; }
+  .booking-price { color: var(--ink); font-size: .78rem; text-align: right; }
+  .booking-status { padding: 5px 8px; border-radius: 999px; font-size: .64rem; font-weight: 900; white-space: nowrap; }
+  .booking-status-todo { color: #8f3e27; background: #ffebe3; }
+  .booking-status-check { color: #7c5b0a; background: #fff2c9; }
+  .booking-status-option { color: #3c6571; background: #e5f1f3; }
+  .booking-item-content { padding: 0 48px 13px 56px; }
+  .booking-item-content p { margin: 0; padding: 10px 12px; border-radius: var(--r-sm); background: #f7faf9; color: var(--muted); font-size: .75rem; }
+
+  .day-card { border-radius: var(--r-lg); background: var(--paper); box-shadow: var(--shadow-md); }
+  .day-card.active { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+  .day-head {
+    padding: 22px 23px 20px 29px;
+    background: #fffefb;
+  }
+  .day-head::before { width: 5px; }
+  .day-label { padding: 7px 10px; }
+  .difficulty { padding: 6px 9px; }
+  .day-head h2 { margin-top: 13px; }
+  .meta-grid {
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: #f8faf9;
+  }
+  .meta {
+    padding: 11px 12px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .meta + .meta { border-left: 1px solid var(--line); }
+  .day-body { padding: 18px 19px 21px; }
+
+  .timeline { gap: 5px; }
+  .timeline-row {
+    padding: 9px 11px;
+    border: 1px solid rgba(8,113,135,.045);
+    border-radius: var(--r-sm);
+    background: #f3f8f7;
+  }
+
+  .poi-list { gap: 9px; }
+  .poi-card {
+    grid-template-columns: 104px minmax(0,1fr);
+    gap: 13px;
+    padding: 10px;
+    border-color: var(--line);
+    border-radius: var(--r-md);
+    box-shadow: none;
+  }
+  .poi-card:hover, .poi-card.active { transform: none; border-color: color-mix(in srgb, var(--day-color) 35%, var(--line)); box-shadow: var(--shadow-sm); }
+  .poi-media { width: 104px; height: 104px; border-radius: 11px; }
+  .poi-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .poi-title-row h3 { min-width: 0; }
+  .poi-map-icon {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    background: var(--sea-soft);
+    color: var(--sea);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 950;
+  }
+  .poi-map-icon:hover, .poi-map-icon:focus-visible { border-color: rgba(8,113,135,.3); background: #fff; box-shadow: var(--shadow-sm); }
+  .chip { padding: 4px 7px; background: #edf5f4; }
+  .poi-actions { margin-top: 8px; }
+  .mini-link { min-height: 34px; border-radius: var(--r-sm); }
+
+  .extras, .detail-stack { display: grid; grid-template-columns: 1fr; gap: 9px; }
+  .mobile-accordion {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: #fff;
+    box-shadow: none;
+  }
+  .mobile-accordion > summary.accordion-summary {
+    display: flex !important;
+    min-height: 54px;
+    padding: 12px 14px;
+    border: 0;
+    background: #fbfcfa;
+  }
+  .mobile-accordion[open] > summary.accordion-summary { border-bottom: 1px solid var(--line); background: #f5f9f8; }
+  .mobile-accordion:not([open]) > .accordion-content { display: none !important; }
+  .mobile-accordion[open] > .accordion-content { display: block !important; }
+  .accordion-desktop-title { display: none !important; }
+  .accordion-summary-copy > span:first-child { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 9px; background: var(--sea-soft); }
+  .accordion-summary-copy > span:last-child { font-size: .82rem; }
+  .accordion-arrow { width: 28px; height: 28px; flex-basis: 28px; }
+  .accordion-content { padding: 12px; }
+  .detail-grid { gap: 8px; }
+  .info-card { padding: 11px; border-radius: var(--r-md); background: #fff; }
+  .info-icon { border-radius: var(--r-sm); }
+  .day-advice-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+  .extra { padding: 12px; border-radius: var(--r-md); background: #f8faf9; }
+  .advice-kicker { display: block; margin-bottom: 7px; color: var(--sea); font-size: .67rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; }
+
+  .video-accordion { margin: 0 0 15px; }
+  .day-video { margin: 0; border: 0; border-radius: 0; background: transparent; }
+  .video-shell { min-height: 160px; border-radius: var(--r-md); }
+  .video-copy { padding-right: 7px; }
+
+  .rail-day { border-color: var(--line); box-shadow: none; }
+  .rail-day:hover, .rail-day.active { box-shadow: var(--shadow-sm); }
+  .map-panel { box-shadow: var(--shadow-lg); }
+  .map-toolbar, .map-footer { background: rgba(255,254,251,.96); }
+
+  @media (max-width: 800px) {
+    .hero { padding: 20px 16px; }
+    .stay-route { grid-template-columns: 1fr; gap: 5px; padding: 7px; }
+    .stay-arrow { display: none; }
+    .stay-stop { padding: 10px 11px 10px 44px; }
+    .stay-stop > span { left: 11px; top: 11px; }
+    .booking-summary { grid-template-columns: 38px minmax(0,1fr) 28px; min-height: 68px; padding: 12px; }
+    .booking-summary-icon { width: 38px; height: 38px; }
+    .booking-summary-total { display: none; }
+    .booking-content { padding: 0 10px 10px; }
+    .booking-item > summary { grid-template-columns: 30px minmax(0,1fr) auto 24px; gap: 7px; padding: 9px 8px; }
+    .booking-price { grid-column: 2; grid-row: 2; text-align: left; color: var(--sea); }
+    .booking-status { grid-column: 3; grid-row: 1 / span 2; }
+    .booking-item-arrow { grid-column: 4; grid-row: 1 / span 2; width: 24px; height: 24px; }
+    .booking-item-content { padding: 0 8px 9px 38px; }
+    .meta-grid { grid-template-columns: 1fr 1fr; }
+    .meta:nth-child(3) { border-left: 0; border-top: 1px solid var(--line); }
+    .meta:nth-child(4) { border-top: 1px solid var(--line); }
+    .day-advice-grid { grid-template-columns: 1fr; }
+    .poi-card { grid-template-columns: 88px minmax(0,1fr); }
+    .poi-media { width: 88px; height: 96px; }
+    .video-shell { min-height: 155px; }
+  }
+
+  @media (max-width: 520px) {
+    .topbar { border-radius: 0 0 14px 14px; }
+    .hero h1 { font-size: clamp(1.45rem, 7.2vw, 1.85rem); }
+    .stay-route { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 4px; }
+    .stay-stop { display: block; min-height: 78px; padding: 35px 5px 8px; text-align: center; }
+    .stay-stop > span { left: 50%; top: 8px; transform: translateX(-50%); }
+    .stay-stop small { display: none; }
+    .stay-stop strong { margin: 0; font-size: .8rem; line-height: 1.12; }
+    .stay-stop em { margin-top: 4px; font-size: .66rem; }
+    .day-head { padding: 17px 14px 15px 20px; }
+    .day-body { padding: 13px; }
+    .poi-card { grid-template-columns: 1fr; padding: 9px; }
+    .poi-media { width: 100%; height: clamp(126px, 35vw, 150px); }
+    .poi-map-icon { width: 38px; height: 38px; }
+    .suggestion-media { height: 195px; }
+    .suggestion-mini-map { height: 45%; }
+    .video-shell { min-height: 145px; }
+    .booking-status { font-size: .58rem; padding: 4px 6px; }
+  }
+
+
+  .day-switcher { margin: 0 0 18px; }
+  .day-switch-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .day-switch-card {
+    position: relative;
+    min-height: 154px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--sea-soft);
+    color: #fff;
+    cursor: pointer;
+    text-align: left;
+    box-shadow: var(--shadow-md);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .day-switch-card:hover,
+  .day-switch-card.active { transform: translateY(-2px); box-shadow: 0 18px 36px rgba(18,54,67,.15); border-color: color-mix(in srgb, var(--day-color) 48%, white); }
+  .day-switch-card img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .day-switch-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(9,28,36,.14) 0%, rgba(9,28,36,.2) 28%, rgba(9,28,36,.72) 100%), linear-gradient(135deg, color-mix(in srgb, var(--day-color) 72%, transparent) 0%, rgba(7,50,61,.18) 55%, rgba(7,50,61,.04) 100%);
+  }
+  .day-switch-copy {
+    position: relative;
+    z-index: 2;
+    min-height: 154px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 6px;
+    padding: 16px;
+  }
+  .day-switch-lodging {
+    font-size: .68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: rgba(255,255,255,.84);
+  }
+  .day-switch-date {
+    font-size: 1rem;
+    line-height: 1.2;
+    font-weight: 900;
+    letter-spacing: -.02em;
+    color: #fff;
+  }
+  .day-switch-theme {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.16);
+    border: 1px solid rgba(255,255,255,.18);
+    font-size: .76rem;
+    font-weight: 800;
+    color: #fff;
+    backdrop-filter: blur(5px);
+  }
+  .day-switch-title {
+    font-size: .77rem;
+    color: rgba(255,255,255,.9);
+    font-style: normal;
+    line-height: 1.35;
+  }
+
+  .day-card[hidden] { display: none !important; }
+
+  #collapse-days { display: none !important; }
+
+  .booking-summary {
+    background: linear-gradient(135deg, var(--sea), var(--sea-dark));
+    color: #fff;
+    border: 0;
+  }
+  .booking-summary-copy strong,
+  .booking-summary-copy small,
+  .booking-summary-total,
+  .booking-summary-total b { color: #fff; }
+  .booking-summary-icon {
+    background: rgba(255,255,255,.16);
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.16);
+  }
+  .booking-summary-arrow,
+  .booking-item-arrow,
+  .accordion-arrow {
+    display: grid;
+    place-items: center;
+    line-height: 1;
+    text-align: center;
+  }
+  .booking-summary-arrow {
+    background: rgba(255,255,255,.15);
+    color: #fff;
+  }
+  .booking-item-arrow,
+  .accordion-arrow {
+    padding-bottom: 0;
+  }
+  .booking-item summary,
+  .accordion-summary {
+    align-items: center;
+  }
+
+  .day-video { margin-top: 16px; }
+
+  @media (max-width: 1220px) {
+    .day-switch-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .day-switch-card,
+    .day-switch-copy { min-height: 138px; }
+  }
+  @media (max-width: 760px) {
+    .day-switch-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .day-switch-card,
+    .day-switch-copy { min-height: 124px; }
+    .day-switch-copy { padding: 13px; }
+    .day-switch-date { font-size: .92rem; }
+    .day-switch-title { display: none; }
+  }
+  @media (max-width: 520px) {
+    .day-switch-grid { grid-template-columns: 1fr; }
+  }
+
+
+  @media print {
+    .booking-accordion > summary,
+    .booking-item > summary,
+    .mobile-accordion > summary { display: none !important; }
+    .booking-content,
+    .booking-item-content,
+    .mobile-accordion .accordion-content { display: block !important; }
+  }
+</style>
+
+
+
+<style id="v99-mobile-map-overlay-fix">
+  /* Source of truth mobile/tablette: cette feuille est volontairement la dernière. */
+  @media (max-width: 1220px) {
+    :root { --mobile-map-final-h: clamp(290px, 38dvh, 340px); }
+
+    html, body {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow-x: hidden !important;
+    }
+    .topbar { display: none !important; }
+    .page,
+    .layout {
+      width: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .layout {
+      display: block !important;
+      position: static !important;
+    }
+
+    .map-column,
+    body.mobile-map-mode .map-column {
+      display: block !important;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: auto !important;
+      inset: 0 0 auto 0 !important;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      height: var(--mobile-map-final-h) !important;
+      min-height: var(--mobile-map-final-h) !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      transform: none !important;
+      z-index: 5000 !important;
+      contain: none !important;
+      isolation: isolate !important;
+    }
+    .map-panel,
+    body.mobile-map-mode .map-panel {
+      display: grid !important;
+      grid-template-rows: 34px minmax(0, 1fr) !important;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      height: 100% !important;
+      min-height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      overflow: hidden !important;
+      box-shadow: 0 8px 22px rgba(15,58,72,.17) !important;
+      background: #eef5f4 !important;
+    }
+    .map-toolbar {
+      display: flex !important;
+      min-height: 34px !important;
+      height: 34px !important;
+      padding: 7px 12px !important;
+      margin: 0 !important;
+      border-radius: 0 !important;
+    }
+    .map-toolbar strong { font-size: .76rem !important; }
+    .map-toolbar span,
+    .map-buttons,
+    .map-footer { display: none !important; }
+    #map,
+    body.mobile-map-mode #map {
+      display: block !important;
+      position: relative !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      height: 100% !important;
+      min-height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      transform: none !important;
+      z-index: 1 !important;
+    }
+
+    .itinerary,
+    body.mobile-map-mode .itinerary {
+      display: block !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+      padding: calc(var(--mobile-map-final-h) + 8px) 8px 24px !important;
+    }
+
+    .mobile-daybar,
+    body.mobile-daybar-active .mobile-daybar,
+    body.mobile-map-mode .mobile-daybar {
+      display: block !important;
+      position: fixed !important;
+      top: 38px !important;
+      left: 4px !important;
+      right: auto !important;
+      bottom: auto !important;
+      width: 40px !important;
+      max-width: 40px !important;
+      height: auto !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      overflow: visible !important;
+      z-index: 30000 !important;
+      isolation: isolate !important;
+    }
+    .mobile-daybar-title {
+      display: grid !important;
+      place-items: center !important;
+      width: 38px !important;
+      height: 19px !important;
+      margin: 0 0 3px !important;
+      padding: 0 !important;
+      border: 1px solid rgba(8,113,135,.20) !important;
+      border-radius: 7px !important;
+      background: rgba(255,255,255,.98) !important;
+      color: var(--sea) !important;
+      font: 950 .50rem/1 Inter, ui-sans-serif, system-ui, sans-serif !important;
+      letter-spacing: .035em !important;
+      text-align: center !important;
+      box-shadow: 0 3px 9px rgba(18,54,67,.15) !important;
+    }
+    .mobile-daybar-scroll {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      gap: 3px !important;
+      width: 40px !important;
+      height: auto !important;
+      max-height: calc(var(--mobile-map-final-h) - 62px) !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      scrollbar-width: none !important;
+      scroll-snap-type: y proximity !important;
+    }
+    .mobile-daybar-scroll::-webkit-scrollbar { display: none !important; }
+    .mobile-daybar .day-link {
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      display: grid !important;
+      place-items: center !important;
+      flex: 0 0 23px !important;
+      width: 38px !important;
+      min-width: 38px !important;
+      max-width: 38px !important;
+      height: 23px !important;
+      min-height: 23px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: visible !important;
+      border: 1px solid rgba(8,113,135,.20) !important;
+      border-radius: 7px !important;
+      background: rgba(255,255,255,.98) !important;
+      color: #087187 !important;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+      font-size: .68rem !important;
+      font-weight: 950 !important;
+      line-height: 1 !important;
+      text-align: center !important;
+      text-indent: 0 !important;
+      white-space: nowrap !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      box-shadow: 0 3px 9px rgba(18,54,67,.14) !important;
+      cursor: pointer !important;
+      scroll-snap-align: start !important;
+    }
+    .mobile-daybar .day-link.active {
+      border-color: #087187 !important;
+      background: #087187 !important;
+      color: #fff !important;
+      box-shadow: 0 4px 12px rgba(8,113,135,.32) !important;
+    }
+
+    .map-column .leaflet-control-container,
+    .map-column .leaflet-top,
+    .map-column .leaflet-bottom { z-index: 7000 !important; }
+    .map-column .leaflet-top.leaflet-right {
+      top: 7px !important;
+      right: 7px !important;
+    }
+    .map-column .leaflet-control-layers { margin-top: 0 !important; }
+    .map-column .leaflet-control-zoom { margin-top: 47px !important; }
+
+    .day-card,
+    .poi-card,
+    .detail-section,
+    [id^="day-"],
+    [id^="j"] {
+      scroll-margin-top: calc(var(--mobile-map-final-h) + 16px) !important;
+    }
+  }
+
+  @media (max-width: 520px) {
+    :root { --mobile-map-final-h: clamp(285px, 38dvh, 325px); }
+  }
+</style>
+
+
+
+<style id="v100-mobile-position-specificity-fix">
+  @media (max-width: 1220px) {
+    html body .layout > .map-column,
+    html body.mobile-daybar-active .layout > .map-column,
+    html body.mobile-map-mode .layout > .map-column,
+    html body.mobile-daybar-active.mobile-map-mode .layout > .map-column {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: auto !important;
+      inset: 0 0 auto 0 !important;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      height: var(--mobile-map-final-h) !important;
+      min-height: var(--mobile-map-final-h) !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      transform: none !important;
+      z-index: 5000 !important;
+    }
+    html body .layout > .map-column > .map-panel,
+    html body.mobile-daybar-active .layout > .map-column > .map-panel,
+    html body.mobile-map-mode .layout > .map-column > .map-panel {
+      width: 100vw !important;
+      max-width: 100vw !important;
+      height: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+    }
+    html body .layout > .map-column #map,
+    html body.mobile-daybar-active .layout > .map-column #map,
+    html body.mobile-map-mode .layout > .map-column #map {
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      transform: none !important;
+    }
+
+    html body .mobile-daybar .day-link,
+    html body.mobile-daybar-active .mobile-daybar .day-link,
+    html body.mobile-map-mode .mobile-daybar .day-link {
+      color: #087187 !important;
+      font-size: .68rem !important;
+      font-weight: 950 !important;
+      line-height: 1 !important;
+      text-indent: 0 !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+    html body .mobile-daybar .day-link.active,
+    html body.mobile-daybar-active .mobile-daybar .day-link.active,
+    html body.mobile-map-mode .mobile-daybar .day-link.active {
+      color: #fff !important;
+    }
+  }
+</style>
+
+
+<style id="v101-mobile-day-labels">
+  @media (max-width: 1220px) {
+    html body .mobile-daybar,
+    html body.mobile-daybar-active .mobile-daybar,
+    html body.mobile-map-mode .mobile-daybar {
+      width: 96px !important;
+      max-width: 96px !important;
+    }
+    html body .mobile-daybar-title {
+      width: 94px !important;
+      height: 20px !important;
+    }
+    html body .mobile-daybar-scroll {
+      width: 96px !important;
+      align-items: flex-start !important;
+    }
+    html body .mobile-daybar .day-link,
+    html body.mobile-daybar-active .mobile-daybar .day-link,
+    html body.mobile-map-mode .mobile-daybar .day-link {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      flex: 0 0 23px !important;
+      width: 94px !important;
+      min-width: 94px !important;
+      max-width: 94px !important;
+      height: 23px !important;
+      min-height: 23px !important;
+      padding: 0 7px !important;
+      overflow: hidden !important;
+      color: #087187 !important;
+      font-size: .61rem !important;
+      font-weight: 900 !important;
+      line-height: 1 !important;
+      letter-spacing: -.01em !important;
+      text-align: left !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+    }
+    html body .mobile-daybar .day-link.active,
+    html body.mobile-daybar-active .mobile-daybar .day-link.active,
+    html body.mobile-map-mode .mobile-daybar .day-link.active {
+      color: #fff !important;
+    }
+  }
+</style>
+
 </head>
 <body>
   <div class="page">
@@ -1919,18 +3461,24 @@
       </div>
     </header>
 
+    <nav class="mobile-daybar" id="mobile-daybar" aria-label="Navigation rapide par journée">
+      <div class="mobile-daybar-title">Jours</div>
+      <div class="mobile-daybar-scroll" id="day-nav"></div>
+    </nav>
+
     <div class="layout">
       <main class="itinerary" id="program-view">
         <section class="hero panel">
-          <span class="eyebrow">10 jours · 3 bases · alternance active / tranquille</span>
-          <h1>Roadbook Zadar</h1>
-          <p>Une version enrichie avec une navigation fixe à gauche, une carte élargie à droite, les niveaux de difficulté colorés, des restaurants réellement locaux, les locations de vélos, kayaks et bateaux sans permis, les prix des parcs, les villages et les dégustations.</p>
+          <span class="eyebrow">Roadbook · Dalmatie du Nord</span>
+          <h1>10 jours entre Zadar, Dugi Otok et Murter</h1>
+          <p>Un séjour équilibré entre îles, randonnée, vélo, kayak, snorkeling et villages dalmates, organisé autour de trois bases de vie.</p>
 
-          <div class="stats">
-            <div class="stat"><small>Base 1</small><strong>Zadar · 4 nuits</strong></div>
-            <div class="stat"><small>Base 2</small><strong>Dugi Otok · 3 nuits</strong></div>
-            <div class="stat"><small>Base 3</small><strong>Murter · 3 nuits</strong></div>
-            <div class="stat"><small>Point fort sport</small><strong>Paklenica · 16–18 km</strong></div>
+          <div class="stay-route" aria-label="Les trois bases du séjour">
+            <div class="stay-stop"><span>01</span><small>Base de départ</small><strong>Zadar</strong><em>4 nuits</em><p class="stay-plan">J1 visite · J2 vélo · J3 trail · J4 kayak</p></div>
+            <div class="stay-arrow" aria-hidden="true">→</div>
+            <div class="stay-stop"><span>02</span><small>Parenthèse insulaire</small><strong>Dugi Otok</strong><em>3 nuits</em><p class="stay-plan">J5 Telašćica · J6 nord de l’île · J7 Kornati</p></div>
+            <div class="stay-arrow" aria-hidden="true">→</div>
+            <div class="stay-stop"><span>03</span><small>Dernière base</small><strong>Murter</strong><em>3 nuits</em><p class="stay-plan">J8 Nin · J9 bateau · J10 départ</p></div>
           </div>
 
           <div class="alert">
@@ -1939,8 +3487,8 @@
           </div>
         </section>
 
-        <nav class="day-nav panel" id="day-nav" aria-label="Navigation par journée"></nav>
         <section class="booking-tools panel" id="booking-tools"></section>
+        <section class="day-switcher" id="day-switcher"></section>
         <section class="days" id="days"></section>
         <section class="regional-suggestions panel" id="regional-suggestions"></section>
 
@@ -2033,10 +3581,10 @@
         snorkel: 'Punta Bajlo est plus intéressante que Kolovare pour chercher quelques poissons et zones rocheuses ; Kolovare reste plus pratique pour une baignade rapide.',
         official: { label: 'Office de tourisme de Zadar', url: 'https://zadar.travel/' },
         pois: [
-          { id: 'j1-narodni', name: 'Narodni trg', type: 'visite', coords: [44.1157, 15.2291], image: commons('Narodni trg Zadar.jpg'), credit: 'Wikimedia Commons', intro: 'La Place du Peuple, bon point de départ pour sentir l’ambiance de la vieille ville.', activities: ['Café et prise de repères', 'Ruelles historiques', 'Marché à proximité'], tags: ['Centre historique', 'Café', 'Départ'] },
-          { id: 'j1-forum', name: 'Forum romain & Saint-Donat', type: 'visite', coords: [44.1166, 15.2244], image: commons('Roman Forum and Church of St. Donatus in Zadar, Croatia (48670503072).jpg'), credit: 'Wikimedia Commons', intro: 'Le cœur monumental de Zadar, très concentré et facile à visiter.', activities: ['Forum romain', 'Église Saint-Donat', 'Cathédrale Sainte-Anastasie'], tags: ['Patrimoine', 'Incontournable'] },
-          { id: 'j1-kolovare', name: 'Plage de Kolovare', type: 'baignade', coords: [44.1083, 15.2392], image: commons('Zadar - plaža Kolovare (istok).jpg'), credit: 'Wikimedia Commons', intro: 'La baignade la plus simple depuis le centre, avec douches et accès immédiat.', activities: ['Baignade', 'Pause en fin de journée', 'Retour facile vers le centre'], tags: ['Baignade', 'Pratique'] },
-          { id: 'j1-sea-organ', name: 'Orgues marines & Salut au Soleil', type: 'visite', coords: [44.1172, 15.2197], image: commons('Sunset in Zadar (Sea organ).jpg'), credit: 'PJL · Wikimedia Commons', intro: 'Le meilleur final de journée à Zadar, surtout autour du coucher du soleil.', activities: ['Écouter les orgues', 'Coucher de soleil', 'Promenade sur la Riva'], tags: ['Sunset', 'Front de mer'] }
+          { id: 'j1-narodni', name: 'Narodni trg', type: 'visite', coords: [44.11427, 15.22774], image: commons('Narodni trg Zadar.jpg'), credit: 'Wikimedia Commons', intro: 'La Place du Peuple, bon point de départ pour sentir l’ambiance de la vieille ville.', activities: ['Café et prise de repères', 'Ruelles historiques', 'Marché à proximité'], tags: ['Centre historique', 'Café', 'Départ'] },
+          { id: 'j1-forum', name: 'Forum romain & Saint-Donat', type: 'visite', coords: [44.11459, 15.22425], image: commons('Roman Forum and Church of St. Donatus in Zadar, Croatia (48670503072).jpg'), credit: 'Wikimedia Commons', intro: 'Le cœur monumental de Zadar, très concentré et facile à visiter.', activities: ['Forum romain', 'Église Saint-Donat', 'Cathédrale Sainte-Anastasie'], tags: ['Patrimoine', 'Incontournable'] },
+          { id: 'j1-kolovare', name: 'Plage de Kolovare', type: 'baignade', coords: [44.10451, 15.23441], image: commons('Zadar - plaža Kolovare (istok).jpg'), credit: 'Wikimedia Commons', intro: 'La baignade la plus simple depuis le centre, avec douches et accès immédiat.', activities: ['Baignade', 'Pause en fin de journée', 'Retour facile vers le centre'], tags: ['Baignade', 'Pratique'] },
+          { id: 'j1-sea-organ', name: 'Orgues marines & Salut au Soleil', type: 'visite', coords: [44.11721, 15.2198], image: commons('Sunset in Zadar (Sea organ).jpg'), credit: 'PJL · Wikimedia Commons', intro: 'Le meilleur final de journée à Zadar, surtout autour du coucher du soleil.', activities: ['Écouter les orgues', 'Coucher de soleil', 'Promenade sur la Riva'], tags: ['Sunset', 'Front de mer'] }
         ]
       },
       {
@@ -2062,10 +3610,10 @@
         snorkel: 'Les rochers autour de Sabuša et certaines petites anses de Kukljica sont plus adaptées au masque-tuba que les zones de port.',
         official: { label: 'Horaires officiels Zadar–Preko', url: 'https://www.jadrolinija.hr/en/travel/zadar_-_preko' },
         pois: [
-          { id: 'j2-preko', name: 'Port de Preko', type: 'transport', coords: [44.0816, 15.1875], image: commons('Preko Ugljan Croatia 2000 - panoramio.jpg'), credit: 'Wikimedia Commons', intro: 'Port d’arrivée et meilleur point pour louer directement les vélos.', activities: ['Bateau depuis le centre de Zadar', 'Location vélo sur place', 'Départ côtier facile'], tags: ['Ferry', 'Location vélo'] },
-          { id: 'j2-fort', name: 'Utvrda sv. Mihovila', type: 'activite', coords: [44.0716, 15.1608], image: commons('Ugljan 8 from st Mihovila.jpg'), credit: 'Wikimedia Commons', intro: 'La forteresse médiévale située sur la colline de Sv. Mihovil, avec un vaste panorama sur l’archipel de Zadar.', activities: ['Montée sportive', 'Vestiges de la forteresse', 'Panorama'], tags: ['Patrimoine', 'Montée'] },
-          { id: 'j2-kukljica', name: 'Kukljica', type: 'visite', coords: [44.03343, 15.24576], image: commons('Kukljica, Croatia - panoramio.jpg'), credit: 'Jean-no · Wikimedia Commons', intro: 'Petit village côtier agréable pour couper la boucle et déjeuner.', activities: ['Front de mer', 'Pause déjeuner', 'Ambiance village'], tags: ['Village', 'Pause'] },
-          { id: 'j2-sabusa', name: 'Plaža Mala Sabuša', type: 'baignade', coords: [44.02719, 15.23516], image: commons('Island of Ugljan 2011 04.jpg'), credit: 'Mike Peel · Wikimedia Commons', intro: 'Une pause baignade logique avant de remonter vers Preko.', activities: ['Baignade', 'Masque-tuba sur les bords rocheux', 'Repos avant le retour'], tags: ['Baignade', 'Snorkeling'] }
+          { id: 'j2-preko', name: 'Port de Preko', type: 'transport', coords: [44.08131, 15.18759], image: commons('Preko Ugljan Croatia 2000 - panoramio.jpg'), credit: 'Wikimedia Commons', intro: 'Port d’arrivée et meilleur point pour louer directement les vélos.', activities: ['Bateau depuis le centre de Zadar', 'Location vélo sur place', 'Départ côtier facile'], tags: ['Ferry', 'Location vélo'] },
+          { id: 'j2-fort', name: 'Utvrda sv. Mihovila', type: 'activite', coords: [44.07193, 15.16213], image: commons('Ugljan 8 from st Mihovila.jpg'), credit: 'Wikimedia Commons', intro: 'La forteresse médiévale située sur la colline de Sv. Mihovil, avec un vaste panorama sur l’archipel de Zadar.', activities: ['Montée sportive', 'Vestiges de la forteresse', 'Panorama'], tags: ['Patrimoine', 'Montée'] },
+          { id: 'j2-kukljica', name: 'Kukljica', type: 'visite', coords: [44.03407, 15.24564], image: commons('Kukljica, Croatia - panoramio.jpg'), credit: 'Jean-no · Wikimedia Commons', intro: 'Petit village côtier agréable pour couper la boucle et déjeuner.', activities: ['Front de mer', 'Pause déjeuner', 'Ambiance village'], tags: ['Village', 'Pause'] },
+          { id: 'j2-sabusa', name: 'Plaža Mala Sabuša', type: 'baignade', coords: [44.02635, 15.23454], image: commons('Island of Ugljan 2011 04.jpg'), credit: 'Mike Peel · Wikimedia Commons', intro: 'Une pause baignade logique avant de remonter vers Preko.', activities: ['Baignade', 'Masque-tuba sur les bords rocheux', 'Repos avant le retour'], tags: ['Baignade', 'Snorkeling'] }
         ]
       },
       {
@@ -2087,14 +3635,14 @@
           ['13:00', 'Fin de sortie, boisson et récupération'],
           ['14:30', 'Baignade à Starigrad ou Seline']
         ],
-        restaurant: { name: 'Lugarnica pour une pause simple ou taverne à Starigrad', text: 'Emporter l’essentiel : l’objectif est le trail, pas de dépendre d’un ravitaillement ouvert.', url: 'https://np-paklenica.hr/en/hiking/hiking-trails-en' },
+        restaurant: { name: 'Šumarska kuća Lugarnica', text: 'Bonne pause simple sur le sentier. En repli, viser une taverne à Starigrad. Emporter l’essentiel : l’objectif reste le trail, sans dépendre d’un ravitaillement ouvert.', url: 'https://www.google.com/maps/search/?api=1&query=%C5%A0umarska+ku%C4%87a+Lugarnica+Paklenica' },
         snorkel: 'La côte de Starigrad est pratique pour récupérer. Pour davantage de rochers, viser une petite entrée d’eau à l’écart de la plage principale.',
         official: { label: 'Sentiers officiels de Paklenica', url: 'https://np-paklenica.hr/en/hiking/hiking-trails-en' },
         pois: [
-          { id: 'j3-entry', name: 'Ulaz 1 · Velika Paklenica', type: 'activite', coords: [44.294053, 15.457578], image: commons('Paklenica Croatia.jpg'), credit: 'IvanaKolencphotography · Wikimedia Commons', intro: 'Départ officiel le plus adapté pour la grande vallée et les sentiers touristiques balisés.', activities: ['Parking et entrée du parc', 'Départ très matinal', 'Canyon principal'], tags: ['Trail', 'Parc national'] },
-          { id: 'j3-lugarnica', name: 'Šumarska kuća Lugarnica', type: 'activite', coords: [44.3168, 15.4841], image: commons('Paklenica valley.JPG'), credit: 'Antonio De Lorenzo · Wikimedia Commons', intro: 'Repère intermédiaire dans la vallée, utile pour ajuster la longueur selon la chaleur.', activities: ['Pause courte', 'Point de décision', 'Forêt plus fraîche'], tags: ['Rando', 'Repère'] },
-          { id: 'j3-hut', name: 'Planinarski dom Paklenica', type: 'activite', coords: [44.34577, 15.48261], image: commons('Paklenica valley 2.JPG'), credit: 'Antonio De Lorenzo · Wikimedia Commons', intro: 'Objectif haut de la sortie pour obtenir une vraie journée de 16 à 18 km aller-retour.', activities: ['Objectif de demi-tour', 'Pause et eau selon ouverture', 'Retour par le même canyon'], tags: ['Objectif trail', 'Demi-tour'] },
-          { id: 'j3-starigrad', name: 'Starigrad Paklenica', type: 'baignade', coords: [44.2950, 15.4382], image: commons('Starigrad Paklenica Velebit.JPG'), credit: 'Joadl · Wikimedia Commons', intro: 'La mer directement au pied du Velebit pour une récupération très agréable.', activities: ['Baignade', 'Boisson fraîche', 'Retour vers Zadar'], tags: ['Récupération', 'Mer'] }
+          { id: 'j3-entry', name: 'Ulaz 1 · Velika Paklenica', type: 'activite', coords: [44.29417, 15.45773], image: commons('Paklenica Croatia.jpg'), credit: 'IvanaKolencphotography · Wikimedia Commons', intro: 'Départ officiel le plus adapté pour la grande vallée et les sentiers touristiques balisés.', activities: ['Parking et entrée du parc', 'Départ très matinal', 'Canyon principal'], tags: ['Trail', 'Parc national'] },
+          { id: 'j3-lugarnica', name: 'Šumarska kuća Lugarnica', type: 'activite', coords: [44.31679, 15.4843], image: commons('Paklenica valley.JPG'), credit: 'Antonio De Lorenzo · Wikimedia Commons', intro: 'Repère intermédiaire dans la vallée, utile pour ajuster la longueur selon la chaleur.', activities: ['Pause courte', 'Point de décision', 'Forêt plus fraîche'], tags: ['Rando', 'Repère'] },
+          { id: 'j3-hut', name: 'Planinarski dom Paklenica', type: 'activite', coords: [44.34588, 15.48297], image: commons('Paklenica valley 2.JPG'), credit: 'Antonio De Lorenzo · Wikimedia Commons', intro: 'Objectif haut de la sortie pour obtenir une vraie journée de 16 à 18 km aller-retour.', activities: ['Objectif de demi-tour', 'Pause et eau selon ouverture', 'Retour par le même canyon'], tags: ['Objectif trail', 'Demi-tour'] },
+          { id: 'j3-starigrad', name: 'Starigrad Paklenica', type: 'baignade', coords: [44.29616, 15.43864], image: commons('Starigrad Paklenica Velebit.JPG'), credit: 'Joadl · Wikimedia Commons', intro: 'La mer directement au pied du Velebit pour une récupération très agréable.', activities: ['Baignade', 'Boisson fraîche', 'Retour vers Zadar'], tags: ['Récupération', 'Mer'] }
         ]
       },
       {
@@ -2120,10 +3668,10 @@
         snorkel: 'Ošljak et les bords rocheux hors zone portuaire offrent les meilleurs petits arrêts masque-tuba de cette boucle.',
         official: { label: 'Tourisme actif sur Ugljan', url: 'https://preko.hr/page/active-tourism/11' },
         pois: [
-          { id: 'j4-launch', name: 'Preko · mise à l’eau', type: 'activite', coords: [44.0811, 15.1869], image: commons('Preko.JPG'), credit: 'Andres rus · Wikimedia Commons', intro: 'Point de départ pratique pour louer et demander un avis local sur le vent.', activities: ['Location', 'Briefing', 'Départ côtier'], tags: ['Kayak', 'Départ'] },
-          { id: 'j4-galevac', name: 'Îlot Galevac', type: 'baignade', coords: [44.0788, 15.1821], image: commons('Preko und Insel Galovac.JPG'), credit: 'AleXXw · Wikimedia Commons', intro: 'Tout petit tour d’échauffement juste en face de Preko.', activities: ['Pagaie facile', 'Tour de l’îlot', 'Pause courte'], tags: ['Îlot', 'Facile'] },
-          { id: 'j4-osljak', name: 'Ošljak', type: 'activite', coords: [44.0784, 15.1662], image: commons('Island of Ugljan 2011 04.jpg'), credit: 'Mike Peel · Wikimedia Commons', intro: 'L’étape la plus dépaysante, avec une traversée courte mais à valider selon trafic et météo.', activities: ['Navigation autour de l’île', 'Petite crique', 'Snorkeling'], tags: ['Île', 'Kayak', 'Snorkeling'] },
-          { id: 'j4-preko-lunch', name: 'Preko · déjeuner au bord de l’eau', type: 'repas', coords: [44.0820, 15.1885], image: commons('Preko Ugljan Croatia 2000 - panoramio.jpg'), credit: 'Wikimedia Commons', intro: 'Retour pratique pour manger avant de reprendre le bateau.', activities: ['Déjeuner', 'Repos', 'Bateau retour'], tags: ['Restaurant', 'Retour'] }
+          { id: 'j4-launch', name: 'Preko · mise à l’eau', type: 'activite', coords: [44.08128, 15.18745], image: commons('Preko.JPG'), credit: 'Andres rus · Wikimedia Commons', intro: 'Point de départ pratique pour louer et demander un avis local sur le vent.', activities: ['Location', 'Briefing', 'Départ côtier'], tags: ['Kayak', 'Départ'] },
+          { id: 'j4-galevac', name: 'Îlot Galevac', type: 'baignade', coords: [44.07888, 15.18263], image: commons('Preko und Insel Galovac.JPG'), credit: 'AleXXw · Wikimedia Commons', intro: 'Tout petit tour d’échauffement juste en face de Preko.', activities: ['Pagaie facile', 'Tour de l’îlot', 'Pause courte'], tags: ['Îlot', 'Facile'] },
+          { id: 'j4-osljak', name: 'Ošljak', type: 'activite', coords: [44.07812, 15.16352], image: commons('Island of Ugljan 2011 04.jpg'), credit: 'Mike Peel · Wikimedia Commons', intro: 'L’étape la plus dépaysante, avec une traversée courte mais à valider selon trafic et météo.', activities: ['Navigation autour de l’île', 'Petite crique', 'Snorkeling'], tags: ['Île', 'Kayak', 'Snorkeling'] },
+          { id: 'j4-preko-lunch', name: 'Preko · déjeuner au bord de l’eau', type: 'repas', coords: [44.08144, 15.18781], image: commons('Preko Ugljan Croatia 2000 - panoramio.jpg'), credit: 'Wikimedia Commons', intro: 'Retour pratique pour manger avant de reprendre le bateau.', activities: ['Déjeuner', 'Repos', 'Bateau retour'], tags: ['Restaurant', 'Retour'] }
         ]
       },
       {
@@ -2149,40 +3697,41 @@
         snorkel: 'La baie de Telašćica possède des secteurs rocheux intéressants. Ne pas confondre baignade au lac Mir et snorkeling marin.',
         official: { label: 'Ferry Zadar/Gaženica–Brbinj', url: 'https://www.jadrolinija.hr/en/travel/zadar_gazenica_-_brbinj_dugi_otok' },
         pois: [
-          { id: 'j5-gazenica', name: 'Trajektna luka Gaženica', type: 'transport', coords: [44.09164, 15.25889], image: commons('Zadar harbour, 2020-10-06, 1435.jpg'), credit: 'Wikimedia Commons', intro: 'Le ferry voiture pour Brbinj part du grand port de Gaženica, pas de la vieille ville.', activities: ['Arriver en avance', 'Embarquement voiture', 'Billet lié au départ choisi'], tags: ['Ferry', 'Voiture'] },
-          { id: 'j5-brbinj', name: 'Trajektno pristanište Brbinj', type: 'transport', coords: [44.083949, 14.996648], image: commons('Brbinj, Dugi otok.JPG'), credit: 'Wikimedia Commons', intro: 'Port d’arrivée central sur l’île, pratique pour rejoindre le sud ou le nord.', activities: ['Débarquement', 'Route panoramique', 'Installation'], tags: ['Arrivée', 'Dugi Otok'] },
-          { id: 'j5-mir', name: 'Jezero Mir', type: 'baignade', coords: [43.88948, 15.16196], image: LOCAL_IMAGES.img1, credit: 'Julien · Wikimedia Commons', intro: 'Le lac salé emblématique, facile à intégrer dans une demi-journée.', activities: ['Balade', 'Baignade éventuelle', 'Paysage de karst'], tags: ['Telašćica', 'Lac salé'] },
-          { id: 'j5-cliffs', name: 'Stene de Telašćica', type: 'visite', coords: [43.8983, 15.1625], image: LOCAL_IMAGES.img2, credit: 'Julien · Wikimedia Commons', intro: 'Le grand panorama de la journée sur l’Adriatique ouverte.', activities: ['Belvédère', 'Marche courte', 'Lumière de fin de journée'], tags: ['Falaises', 'Panorama'] }
+          { id: 'j5-gazenica', name: 'Trajektna luka Gaženica', type: 'transport', coords: [44.09485, 15.25571], image: commons('Zadar harbour, 2020-10-06, 1435.jpg'), credit: 'Wikimedia Commons', intro: 'Le ferry voiture pour Brbinj part du grand port de Gaženica, pas de la vieille ville.', activities: ['Arriver en avance', 'Embarquement voiture', 'Billet lié au départ choisi'], tags: ['Ferry', 'Voiture'] },
+          { id: 'j5-brbinj', name: 'Trajektno pristanište Brbinj', type: 'transport', coords: [44.08325, 14.99567], image: commons('Brbinj, Dugi otok.JPG'), credit: 'Wikimedia Commons', intro: 'Port d’arrivée central sur l’île, pratique pour rejoindre le sud ou le nord.', activities: ['Débarquement', 'Route panoramique', 'Installation'], tags: ['Arrivée', 'Dugi Otok'] },
+          { id: 'j5-mir', name: 'Jezero Mir', type: 'baignade', coords: [43.88936, 15.16244], image: LOCAL_IMAGES.img1, credit: 'Julien · Wikimedia Commons', intro: 'Le lac salé emblématique, facile à intégrer dans une demi-journée.', activities: ['Balade', 'Baignade éventuelle', 'Paysage de karst'], tags: ['Telašćica', 'Lac salé'] },
+          { id: 'j5-cliffs', name: 'Belvédère de Grpašćak · falaises de Telašćica', type: 'visite', coords: [43.9049169, 15.1348302], image: LOCAL_IMAGES.img2, credit: 'Julien · Wikimedia Commons', intro: 'Le véritable point de vue terrestre sur les falaises de Telašćica, depuis l’ancien fort de Grpašćak à 161 m au-dessus de la mer.', activities: ['Belvédère sur les Stene', 'Vue sur la baie de Telašćica', 'Centre d’interprétation'], tags: ['Falaises', 'Belvédère', 'Grpašćak'] }
         ]
       },
       {
         day: 6,
         date: 'Mercredi 29 juillet',
-        title: 'Grand nord de Dugi Otok',
+        title: 'Dragon’s Eye + grand nord de Dugi Otok',
         rhythm: 'Modéré / actif',
         sleep: 'Dugi Otok',
         transport: 'Voiture + marche + baignade',
         budget: '€€',
-        summary: 'Phare de Veli Rat, baignade et snorkeling sur la côte rocheuse, Sakarun tôt ou tard, puis Božava. Golubinka est proposée comme alternative guidée et météo-dépendante, pas comme étape à cumuler obligatoirement.',
+        summary: 'Départ matinal vers Dragon’s Eye dans la baie de Brbinjšćica, puis remontée vers le phare de Veli Rat, Verunić, Sakarun et Božava. Dragon’s Eye n’est pas situé dans le nord de l’île : il crée un vrai détour, mais l’ordre ci-dessous reste cohérent et évite les allers-retours inutiles.',
         routeMode: 'Voiture',
         routeDash: null,
         schedule: [
-          ['07:00', 'Option réservée : kayak guidé vers Golubinka ; si choisie, supprimer Božava ou Sakarun'],
-          ['08:00', 'Sinon, départ vers le phare de Veli Rat'],
-          ['09:00', 'Balade autour du phare et criques voisines'],
-          ['11:30', 'Baignade à Sakarun avant le pic de fréquentation'],
-          ['14:00', 'Déjeuner vers Verunić'],
-          ['16:00', 'Côte rocheuse et snorkeling'],
-          ['18:30', 'Balade à Božava']
+          ['07:00', 'Départ vers la baie de Brbinjšćica'],
+          ['08:15', 'Dragon’s Eye : marche d’approche, observation et plongeons uniquement si la mer est parfaitement calme'],
+          ['09:30', 'Route vers le grand nord de Dugi Otok'],
+          ['11:00', 'Phare de Veli Rat · Punta Bjanca'],
+          ['12:45', 'Déjeuner à Verunić'],
+          ['14:30', 'Baignade à Sakarun'],
+          ['17:30', 'Promenade et verre à Božava']
         ],
-        restaurant: { name: 'Gorgonia à Verunić', text: 'Adresse référencée par l’office de tourisme de Dugi Otok, logique sur cette journée nord.', url: 'https://www.dugiotok.hr/en/offer-dining' },
-        snorkel: 'Pour voir davantage de vie marine, privilégier les rochers autour de Veli Rat/Verunić plutôt que le centre sableux et peu profond de Sakarun.',
-        official: { label: 'Informations officielles Sakarun', url: 'https://www.dugiotok.hr/en/attractions-sakarun' },
+        restaurant: { name: 'Gorgonia à Verunić', text: 'Pause déjeuner logique entre le phare et Sakarun. Vérifier les horaires et réserver en haute saison.', url: 'https://www.google.com/maps/search/?api=1&query=Gorgonia+Grill+Verunic+Dugi+Otok' },
+        snorkel: 'Dragon’s Eye et les rochers autour du phare demandent une mer très calme et de bonnes chaussures. Sakarun est surtout une plage de baignade : pour le masque-tuba, privilégier les bordures rocheuses plutôt que le centre sableux.',
+        official: { label: 'Office de tourisme de Dugi Otok', url: 'https://www.dugiotok.hr/en/' },
         pois: [
-          { id: 'j6-lighthouse', name: 'Phare de Veli Rat · Punta Bjanca', type: 'visite', coords: [44.15203, 14.82022], image: commons('Veli Rat lighthouse 2.JPG'), credit: 'Wikimedia Commons', intro: 'Le point le plus emblématique du nord de l’île, entouré de côtes rocheuses.', activities: ['Balade autour du phare', 'Photo', 'Criques proches'], tags: ['Phare', 'Nord'] },
-          { id: 'j6-sakarun', name: 'Plaža Sakarun', type: 'baignade', coords: [44.13365, 14.87201], image: commons('Sakarun beach.jpg'), credit: 'Mich973 · Wikimedia Commons', intro: 'Grande baie peu profonde et très photogénique, meilleure tôt le matin.', activities: ['Baignade', 'Temps de plage', 'Eau peu profonde'], tags: ['Plage', 'Turquoise'] },
-          { id: 'j6-verunic', name: 'Verunić', type: 'repas', coords: [44.14355, 14.85846], image: commons('Dugi Otok Greta Ceresini.jpg'), credit: 'Greta Ceresini · Wikimedia Commons', intro: 'Pause déjeuner bien placée et accès à des zones rocheuses plus intéressantes.', activities: ['Déjeuner', 'Petites anses', 'Masque-tuba'], tags: ['Restaurant', 'Snorkeling'] },
-          { id: 'j6-bozava', name: 'Božava', type: 'visite', coords: [44.1404, 14.9062], image: commons('Božava, Dugi otok.JPG'), credit: 'Lkcl it · Wikimedia Commons', intro: 'Petit port agréable pour finir la journée avec une ambiance plus calme.', activities: ['Promenade', 'Glace ou verre', 'Fin de journée tranquille'], tags: ['Village', 'Port'] }
+          { id: 'j6-dragons-eye', name: 'Dragon’s Eye · baie de Brbinjšćica', type: 'baignade', coords: [44.05453, 14.98742], image: commons('Dugi Otok Greta Ceresini.jpg'), credit: 'Greta Ceresini · Wikimedia Commons', intro: 'Piscine naturelle reliée à la mer par des tunnels immergés, située dans la baie de Brbinjšćica — et non dans le nord de l’île.', activities: ['Marche sur terrain rocheux', 'Plongeons uniquement par mer calme', 'Aucun passage sous-marin sans encadrement'], tags: ['Brbinjšćica', 'Plongeons', 'Prudence'] },
+          { id: 'j6-lighthouse', name: 'Phare de Veli Rat · Punta Bjanca', type: 'visite', coords: [44.152028, 14.820222], image: commons('Veli Rat lighthouse 2.JPG'), credit: 'Wikimedia Commons', intro: 'Le grand phare de Punta Bjanca, à l’extrémité nord-ouest de Dugi Otok.', activities: ['Balade autour du phare', 'Photo', 'Criques rocheuses proches'], tags: ['Phare', 'Nord-ouest'] },
+          { id: 'j6-verunic', name: 'Verunić', type: 'repas', coords: [44.142983, 14.856863], image: commons('Dugi Otok Greta Ceresini.jpg'), credit: 'Greta Ceresini · Wikimedia Commons', intro: 'Village de la baie de Čuna, bien placé pour déjeuner entre le phare et Sakarun.', activities: ['Déjeuner', 'Petit port', 'Pause au calme'], tags: ['Village', 'Restaurant'] },
+          { id: 'j6-sakarun', name: 'Plaža Sakarun', type: 'baignade', coords: [44.13387, 14.87182], image: commons('Sakarun beach.jpg'), credit: 'Mich973 · Wikimedia Commons', intro: 'Grande baie peu profonde sur la côte nord-ouest de Dugi Otok.', activities: ['Baignade', 'Temps de plage', 'Eau peu profonde'], tags: ['Plage', 'Turquoise'] },
+          { id: 'j6-bozava', name: 'Port de Božava', type: 'visite', coords: [44.140000, 14.906333], image: commons('Božava, Dugi otok.JPG'), credit: 'Lkcl it · Wikimedia Commons', intro: 'Petit port agréable pour terminer la journée sans ajouter de détour.', activities: ['Promenade sur le port', 'Glace ou verre', 'Fin de journée tranquille'], tags: ['Village', 'Port'] }
         ]
       },
       {
@@ -2208,10 +3757,10 @@
         snorkel: 'Le meilleur moment masque-tuba dépendra des escales. Demander explicitement une sortie avec au moins deux arrêts baignade et du temps réel dans l’eau.',
         official: { label: 'Excursions officielles Kornati', url: 'https://www.np-kornati.hr/index.php?Itemid=277&id=85&lang=en&option=com_content&view=article' },
         pois: [
-          { id: 'j7-sali', name: 'Port de Sali', type: 'transport', coords: [43.9397, 15.1630], image: commons('Sali harbour.jpg'), credit: 'Wikimedia Commons', intro: 'Le point de départ le plus logique depuis votre base sur Dugi Otok.', activities: ['Embarquement', 'Café avant départ', 'Retour en fin de journée'], tags: ['Port', 'Excursion'] },
-          { id: 'j7-tarac', name: 'Tarac · île de Kornat', type: 'visite', coords: [43.820633, 15.250558], image: commons('Nacionalni park Kornati.jpg'), credit: 'Wikimedia Commons', intro: 'Un site emblématique de l’île de Kornat ; la présence de cet arrêt dépend de l’opérateur et de la météo.', activities: ['Paysage minéral', 'Petite marche possible', 'Vue sur l’archipel'], tags: ['Kornati', 'Panorama'] },
-          { id: 'j7-levrnaka', name: 'Île de Levrnaka', type: 'baignade', coords: [43.82338, 15.24825], image: commons('Lojena, Levrnaka 20240721 161.jpg'), credit: 'Wikimedia Commons', intro: 'Île fréquemment approchée lors des excursions ; la plage ou la baie exacte dépend du programme du bateau.', activities: ['Baignade', 'Snorkeling', 'Pause à terre'], tags: ['Crique', 'Snorkeling'] },
-          { id: 'j7-mana', name: 'Île de Mana', type: 'visite', coords: [43.80129, 15.27023], image: commons('Mana - Kornati.JPG'), credit: 'Wikimedia Commons', intro: 'Île spectaculaire sur la bordure extérieure des Kornati, visible seulement si l’itinéraire descend suffisamment au sud.', activities: ['Navigation', 'Photos', 'Paysage de falaises'], tags: ['Bateau', 'Falaises'] }
+          { id: 'j7-sali', name: 'Port de Sali', type: 'transport', coords: [43.93967, 15.16315], image: commons('Sali harbour.jpg'), credit: 'Wikimedia Commons', intro: 'Le point de départ le plus logique depuis votre base sur Dugi Otok.', activities: ['Embarquement', 'Café avant départ', 'Retour en fin de journée'], tags: ['Port', 'Excursion'] },
+          { id: 'j7-tarac', name: 'Tarac · île de Kornat', type: 'visite', coords: [43.82095, 15.25186], image: commons('Nacionalni park Kornati.jpg'), credit: 'Wikimedia Commons', intro: 'Un site emblématique de l’île de Kornat ; la présence de cet arrêt dépend de l’opérateur et de la météo.', activities: ['Paysage minéral', 'Petite marche possible', 'Vue sur l’archipel'], tags: ['Kornati', 'Panorama'] },
+          { id: 'j7-levrnaka', name: 'Île de Levrnaka', type: 'baignade', coords: [43.81628, 15.25196], image: commons('Lojena, Levrnaka 20240721 161.jpg'), credit: 'Wikimedia Commons', intro: 'Île fréquemment approchée lors des excursions ; la plage ou la baie exacte dépend du programme du bateau.', activities: ['Baignade', 'Snorkeling', 'Pause à terre'], tags: ['Crique', 'Snorkeling'] },
+          { id: 'j7-mana', name: 'Île de Mana', type: 'visite', coords: [43.80039, 15.2716], image: commons('Mana - Kornati.JPG'), credit: 'Wikimedia Commons', intro: 'Île spectaculaire sur la bordure extérieure des Kornati, visible seulement si l’itinéraire descend suffisamment au sud.', activities: ['Navigation', 'Photos', 'Paysage de falaises'], tags: ['Bateau', 'Falaises'] }
         ]
       },
       {
@@ -2237,10 +3786,10 @@
         snorkel: 'Podvrške possède des bords rocheux et une eau claire ; éviter le centre le plus fréquenté si l’objectif est d’observer des poissons.',
         official: { label: 'Restaurants officiels de Murter/Betina', url: 'https://www.murter-kornati.com/en/restaurants-island-murter/gastronomy' },
         pois: [
-          { id: 'j8-brbinj', name: 'Trajektno pristanište Brbinj · retour', type: 'transport', coords: [44.083949, 14.996648], image: commons('Brbinj, Dugi otok.JPG'), credit: 'Wikimedia Commons', intro: 'Retour vers Gaženica avec la voiture.', activities: ['Arriver en avance', 'Embarquement', 'Traversée 1 h 40 environ'], tags: ['Ferry', 'Retour'] },
-          { id: 'j8-nin', name: 'Nin', type: 'visite', coords: [44.2420, 15.1832], image: LOCAL_IMAGES.img3, credit: 'Bernard Gagnon · Wikimedia Commons · CC BY-SA 4.0', intro: 'Petit centre historique compact, idéal pour couper le trajet sans alourdir la journée.', activities: ['Vieille ville', 'Déjeuner', 'Lagune et petite église'], tags: ['Village', 'Pause route'] },
-          { id: 'j8-betina', name: 'Betina', type: 'repas', coords: [43.8255, 15.6045], image: commons('Betina-Murter.jpg'), credit: 'Miha Peče · Wikimedia Commons', intro: 'Un joli port pour s’installer dans la nouvelle base et dîner au bord de l’eau.', activities: ['Installation', 'Promenade', 'Dîner'], tags: ['Base Murter', 'Port'] },
-          { id: 'j8-podvrske', name: 'Plaža Podvrške', type: 'baignade', coords: [43.82375, 15.57372], image: LOCAL_IMAGES.img4, credit: 'Wikimedia Commons', intro: 'Option de baignade de fin de journée avec eau claire.', activities: ['Baignade', 'Snorkeling sur les bords', 'Coucher de soleil'], tags: ['Plage', 'Snorkeling'] }
+          { id: 'j8-brbinj', name: 'Trajektno pristanište Brbinj · retour', type: 'transport', coords: [44.08325, 14.99567], image: commons('Brbinj, Dugi otok.JPG'), credit: 'Wikimedia Commons', intro: 'Retour vers Gaženica avec la voiture.', activities: ['Arriver en avance', 'Embarquement', 'Traversée 1 h 40 environ'], tags: ['Ferry', 'Retour'] },
+          { id: 'j8-nin', name: 'Nin', type: 'visite', coords: [44.24233, 15.18361], image: LOCAL_IMAGES.img3, credit: 'Bernard Gagnon · Wikimedia Commons · CC BY-SA 4.0', intro: 'Petit centre historique compact, idéal pour couper le trajet sans alourdir la journée.', activities: ['Vieille ville', 'Déjeuner', 'Lagune et petite église'], tags: ['Village', 'Pause route'] },
+          { id: 'j8-betina', name: 'Betina', type: 'repas', coords: [43.82602, 15.60362], image: commons('Betina-Murter.jpg'), credit: 'Miha Peče · Wikimedia Commons', intro: 'Un joli port pour s’installer dans la nouvelle base et dîner au bord de l’eau.', activities: ['Installation', 'Promenade', 'Dîner'], tags: ['Base Murter', 'Port'] },
+          { id: 'j8-podvrske', name: 'Plaža Podvrške', type: 'baignade', coords: [43.82316, 15.57562], image: LOCAL_IMAGES.img4, credit: 'Wikimedia Commons', intro: 'Option de baignade de fin de journée avec eau claire.', activities: ['Baignade', 'Snorkeling sur les bords', 'Coucher de soleil'], tags: ['Plage', 'Snorkeling'] }
         ]
       },
       {
@@ -2266,10 +3815,10 @@
         snorkel: 'Pas de snorkeling marin ce jour-là : profiter plutôt des zones de baignade en rivière indiquées par le guide.',
         official: { label: 'Recherche activité Zrmanja', url: 'https://www.google.com/maps/search/?api=1&query=Zrmanja+kayak+Kastel+Zegarski' },
         pois: [
-          { id: 'j9-start', name: 'Kaštel Žegarski', type: 'activite', coords: [44.1842, 15.7880], image: commons('Zrmanja.jpg'), credit: 'Danilo Tic · Wikimedia Commons', intro: 'Zone de départ classique pour les descentes encadrées.', activities: ['Accueil prestataire', 'Équipement', 'Briefing sécurité'], tags: ['Kayak', 'Départ'] },
-          { id: 'j9-krupa', name: 'Confluence Zrmanja–Krupa', type: 'activite', coords: [44.1767, 15.8188], image: commons('DSC00848cc junction zrmanja krupa.jpg'), credit: 'Helbob · Wikimedia Commons', intro: 'Le cœur paysager de la descente, dans une rivière claire et encaissée.', activities: ['Navigation', 'Petits rapides', 'Pause baignade'], tags: ['Canyon', 'Rivière'] },
-          { id: 'j9-waterfall', name: 'Secteur des cascades', type: 'baignade', coords: [44.1690, 15.8402], image: commons('Zadar (HR), Krupa-Canyon -- 2022 -- 0112.jpg'), credit: 'Anil Öztas · Wikimedia Commons', intro: 'Le secteur le plus ludique, franchi ou contourné selon le niveau d’eau.', activities: ['Cascades', 'Baignade encadrée', 'Photos'], tags: ['Cascade', 'Baignade'] },
-          { id: 'j9-muskovci', name: 'Muškovci', type: 'transport', coords: [44.1649, 15.8568], image: commons('Jankovića buk.jpg'), credit: 'Andrej Vukić · Wikimedia Commons', intro: 'Fin habituelle de la descente et point de récupération.', activities: ['Fin de parcours', 'Repas éventuel', 'Navette retour'], tags: ['Arrivée', 'Navette'] }
+          { id: 'j9-start', name: 'Kaštel Žegarski', type: 'activite', coords: [44.1849, 15.78975], image: commons('Zrmanja.jpg'), credit: 'Danilo Tic · Wikimedia Commons', intro: 'Zone de départ classique pour les descentes encadrées.', activities: ['Accueil prestataire', 'Équipement', 'Briefing sécurité'], tags: ['Kayak', 'Départ'] },
+          { id: 'j9-krupa', name: 'Confluence Zrmanja–Krupa', type: 'activite', coords: [44.17768, 15.8187], image: commons('DSC00848cc junction zrmanja krupa.jpg'), credit: 'Helbob · Wikimedia Commons', intro: 'Le cœur paysager de la descente, dans une rivière claire et encaissée.', activities: ['Navigation', 'Petits rapides', 'Pause baignade'], tags: ['Canyon', 'Rivière'] },
+          { id: 'j9-waterfall', name: 'Secteur des cascades', type: 'baignade', coords: [44.16823, 15.84288], image: commons('Zadar (HR), Krupa-Canyon -- 2022 -- 0112.jpg'), credit: 'Anil Öztas · Wikimedia Commons', intro: 'Le secteur le plus ludique, franchi ou contourné selon le niveau d’eau.', activities: ['Cascades', 'Baignade encadrée', 'Photos'], tags: ['Cascade', 'Baignade'] },
+          { id: 'j9-muskovci', name: 'Muškovci', type: 'transport', coords: [44.16434, 15.85789], image: commons('Jankovića buk.jpg'), credit: 'Andrej Vukić · Wikimedia Commons', intro: 'Fin habituelle de la descente et point de récupération.', activities: ['Fin de parcours', 'Repas éventuel', 'Navette retour'], tags: ['Arrivée', 'Navette'] }
         ]
       },
       {
@@ -2295,9 +3844,9 @@
         snorkel: 'Dernier bain possible à Podvrške, mais seulement si les bagages, la route et la restitution de voiture sont parfaitement sous contrôle.',
         official: { label: 'Aéroport de Zadar', url: 'https://www.zadar-airport.hr/en' },
         pois: [
-          { id: 'j10-betina', name: 'Betina', type: 'repas', coords: [43.8255, 15.6045], image: commons('Betina, island of Murter, Croatia - harbour 14.10.2007. 076.jpg'), credit: 'Ante Perkovic · Wikimedia Commons', intro: 'Petit port agréable pour un dernier café sans se presser.', activities: ['Petit-déjeuner', 'Balade courte', 'Derniers achats'], tags: ['Café', 'Village'] },
-          { id: 'j10-podvrske', name: 'Plaža Podvrške · dernier bain', type: 'baignade', coords: [43.82375, 15.57372], image: LOCAL_IMAGES.img4, credit: 'Roberta F. · Wikimedia Commons', intro: 'Option courte si la matinée se déroule parfaitement.', activities: ['Baignade rapide', 'Douche ensuite', 'Retour récupérer les bagages'], tags: ['Dernier bain', 'Option'] },
-          { id: 'j10-airport', name: 'Aéroport de Zadar', type: 'transport', coords: [44.1083, 15.3467], image: commons('Zadar Airport.jpg'), credit: 'Wikimedia Commons', intro: 'Dernière étape, avec marge pour carburant, restitution et contrôle.', activities: ['Restitution voiture', 'Enregistrement', 'Vol retour'], tags: ['Aéroport', 'Départ'] }
+          { id: 'j10-betina', name: 'Betina', type: 'repas', coords: [43.82602, 15.60362], image: commons('Betina, island of Murter, Croatia - harbour 14.10.2007. 076.jpg'), credit: 'Ante Perkovic · Wikimedia Commons', intro: 'Petit port agréable pour un dernier café sans se presser.', activities: ['Petit-déjeuner', 'Balade courte', 'Derniers achats'], tags: ['Café', 'Village'] },
+          { id: 'j10-podvrske', name: 'Plaža Podvrške · dernier bain', type: 'baignade', coords: [43.82316, 15.57562], image: LOCAL_IMAGES.img4, credit: 'Roberta F. · Wikimedia Commons', intro: 'Option courte si la matinée se déroule parfaitement.', activities: ['Baignade rapide', 'Douche ensuite', 'Retour récupérer les bagages'], tags: ['Dernier bain', 'Option'] },
+          { id: 'j10-airport', name: 'Aéroport de Zadar', type: 'transport', coords: [44.10887, 15.34691], image: commons('Zadar Airport.jpg'), credit: 'Wikimedia Commons', intro: 'Dernière étape, avec marge pour carburant, restitution et contrôle.', activities: ['Restitution voiture', 'Enregistrement', 'Vol retour'], tags: ['Aéroport', 'Départ'] }
         ]
       }
     ];
@@ -2345,10 +3894,10 @@
       snorkel: 'La côte orientale entre Tkon, Ugrinić et Kraj permet des arrêts baignade faciles. Rester proche du rivage et annuler la sortie autonome si le vent ou le trafic maritime ne sont pas favorables.',
       official: { label: 'Horaires officiels Biograd–Tkon', url: 'https://www.jadrolinija.hr/en/travel/biograd_-_tkon_pasman' },
       pois: [
-        { id: 'j4-biograd', name: 'Port de Biograd na Moru', type: 'transport', coords: [43.9383, 15.4430], image: LOCAL_IMAGES.img5, credit: 'Falk2 · Wikimedia Commons · CC BY-SA 4.0', intro: 'Embarcadère du ferry pour Tkon. Traversée courte de 20 minutes.', activities: ['Stationnement à proximité', 'Ferry piéton', 'Départ à 08:00 conseillé'], tags: ['Ferry', 'Biograd'] },
-        { id: 'j4-tkon', name: 'Trajektno pristanište Tkon · mise à l’eau', type: 'activite', coords: [43.921652, 15.420635], image: LOCAL_IMAGES.img6, credit: 'Pašmania · Tkon ferry port', intro: 'Point de départ le plus logique pour louer un kayak directement sur Pašman.', activities: ['Location et briefing', 'Départ côtier', 'Village du sud de Pašman'], tags: ['Kayak', 'Loueur', 'Pašman'] },
-        { id: 'j4-ugrinic', name: 'Ugrinić', type: 'baignade', coords: [43.92979, 15.40317], image: LOCAL_IMAGES.img7, credit: 'Wikimedia Commons', intro: 'Petites anses et côte abritée pour une première pause sans traversée au large.', activities: ['Pagaie côtière', 'Baignade', 'Pause courte'], tags: ['Côte', 'Baignade'] },
-        { id: 'j4-kraj', name: 'Franjevački samostan sv. Dujma · Kraj', type: 'visite', coords: [43.93626, 15.39271], image: LOCAL_IMAGES.img8, credit: 'Wikimedia Commons', intro: 'Très joli arrêt culturel au bord de l’eau, à combiner avec le déjeuner ou une dégustation sur réservation.', activities: ['Monastère franciscain de Saint-Domnius', 'Village de Kraj', 'Option huile d’olive locale'], tags: ['Village', 'Patrimoine', 'Dégustation'] }
+        { id: 'j4-biograd', name: 'Port de Biograd na Moru', type: 'transport', coords: [43.93815, 15.44282], image: LOCAL_IMAGES.img5, credit: 'Falk2 · Wikimedia Commons · CC BY-SA 4.0', intro: 'Embarcadère du ferry pour Tkon. Traversée courte de 20 minutes.', activities: ['Stationnement à proximité', 'Ferry piéton', 'Départ à 08:00 conseillé'], tags: ['Ferry', 'Biograd'] },
+        { id: 'j4-tkon', name: 'Trajektno pristanište Tkon · mise à l’eau', type: 'activite', coords: [43.92201, 15.42035], image: LOCAL_IMAGES.img6, credit: 'Pašmania · Tkon ferry port', intro: 'Point de départ le plus logique pour louer un kayak directement sur Pašman.', activities: ['Location et briefing', 'Départ côtier', 'Village du sud de Pašman'], tags: ['Kayak', 'Loueur', 'Pašman'] },
+        { id: 'j4-ugrinic', name: 'Ugrinić', type: 'baignade', coords: [43.92973, 15.40338], image: LOCAL_IMAGES.img7, credit: 'Wikimedia Commons', intro: 'Petites anses et côte abritée pour une première pause sans traversée au large.', activities: ['Pagaie côtière', 'Baignade', 'Pause courte'], tags: ['Côte', 'Baignade'] },
+        { id: 'j4-kraj', name: 'Franjevački samostan sv. Dujma · Kraj', type: 'visite', coords: [43.93635, 15.39276], image: LOCAL_IMAGES.img8, credit: 'Wikimedia Commons', intro: 'Très joli arrêt culturel au bord de l’eau, à combiner avec le déjeuner ou une dégustation sur réservation.', activities: ['Monastère franciscain de Saint-Domnius', 'Village de Kraj', 'Option huile d’olive locale'], tags: ['Village', 'Patrimoine', 'Dégustation'] }
       ]
     });
 
@@ -2416,11 +3965,11 @@
       snorkel: 'Les îlots proches de la baie de Hramina donnent accès à des bords rocheux intéressants. Ne pas forcer vers les Kornati avec un petit bateau si le vent se lève ; suivre strictement les limites expliquées par le loueur.',
       official: { label: 'Moto Sport Murter · bateau sans permis', url: 'https://www.checkyeti.com/en/d/4113/29539' },
       pois: [
-        { id: 'j9-hramina', name: 'Marina Hramina · départ', type: 'transport', coords: [43.82684, 15.59175], image: commons('Marina Hramina - panoramio.jpg'), credit: 'Wikimedia Commons', intro: 'Départ très protégé et briefing auprès du loueur avant de quitter la baie.', activities: ['Retrait du bateau', 'Briefing sécurité', 'Carburant payé sur place'], tags: ['Bateau sans permis', 'Départ'] },
-        { id: 'j9-vinik', name: 'Vinik Mali et Vinik Veliki', type: 'baignade', coords: [43.83073, 15.58487], image: commons('Otok Vinik Veli - panoramio.jpg'), credit: 'Wikimedia Commons', intro: 'Premiers îlots à quelques minutes de Murter, parfaits pour prendre confiance et faire un premier bain.', activities: ['Navigation courte', 'Mouillage calme', 'Baignade'], tags: ['Îlots', 'Baignade'] },
-        { id: 'j9-radelj', name: 'Radelj', type: 'activite', coords: [43.84414, 15.56763], image: commons('Murter and nearby islands.jpg'), credit: 'Wikimedia Commons', intro: 'Île boisée au nord-ouest de Murter, avec des portions de côte propices au snorkeling par mer calme.', activities: ['Navigation côtière', 'Snorkeling', 'Pause à l’ombre'], tags: ['Île', 'Snorkeling'] },
-        { id: 'j9-zminjak', name: 'Zminjak', type: 'repas', coords: [43.84060, 15.57939], image: commons('Murter and nearby islands.jpg'), credit: 'Wikimedia Commons', intro: 'Petit îlot proche de Murter, adapté à une pause de milieu de journée sans s’éloigner vers le large.', activities: ['Pause déjeuner', 'Mouillage', 'Baignade'], tags: ['Pause', 'Îlot'] },
-        { id: 'j9-podvrske', name: 'Plaža Podvrške · retour baignade', type: 'baignade', coords: [43.82375, 15.57372], image: LOCAL_IMAGES.img4, credit: 'Wikimedia Commons', intro: 'Dernière pause possible avant de rendre le bateau, uniquement si le timing et la météo sont confortables.', activities: ['Dernier bain', 'Snorkeling léger', 'Retour Marina Hramina'], tags: ['Retour', 'Baignade'] }
+        { id: 'j9-hramina', name: 'Marina Hramina · départ', type: 'transport', coords: [43.82671, 15.59156], image: commons('Marina Hramina - panoramio.jpg'), credit: 'Wikimedia Commons', intro: 'Départ très protégé et briefing auprès du loueur avant de quitter la baie.', activities: ['Retrait du bateau', 'Briefing sécurité', 'Carburant payé sur place'], tags: ['Bateau sans permis', 'Départ'] },
+        { id: 'j9-vinik', name: 'Vinik Mali et Vinik Veliki', type: 'baignade', coords: [43.83082, 15.58492], image: commons('Otok Vinik Veli - panoramio.jpg'), credit: 'Wikimedia Commons', intro: 'Premiers îlots à quelques minutes de Murter, parfaits pour prendre confiance et faire un premier bain.', activities: ['Navigation courte', 'Mouillage calme', 'Baignade'], tags: ['Îlots', 'Baignade'] },
+        { id: 'j9-radelj', name: 'Radelj', type: 'activite', coords: [43.84365, 15.5674], image: commons('Murter and nearby islands.jpg'), credit: 'Wikimedia Commons', intro: 'Île boisée au nord-ouest de Murter, avec des portions de côte propices au snorkeling par mer calme.', activities: ['Navigation côtière', 'Snorkeling', 'Pause à l’ombre'], tags: ['Île', 'Snorkeling'] },
+        { id: 'j9-zminjak', name: 'Zminjak', type: 'repas', coords: [43.84055, 15.57962], image: commons('Murter and nearby islands.jpg'), credit: 'Wikimedia Commons', intro: 'Petit îlot proche de Murter, adapté à une pause de milieu de journée sans s’éloigner vers le large.', activities: ['Pause déjeuner', 'Mouillage', 'Baignade'], tags: ['Pause', 'Îlot'] },
+        { id: 'j9-podvrske', name: 'Plaža Podvrške · retour baignade', type: 'baignade', coords: [43.82316, 15.57562], image: LOCAL_IMAGES.img4, credit: 'Wikimedia Commons', intro: 'Dernière pause possible avant de rendre le bateau, uniquement si le timing et la météo sont confortables.', activities: ['Dernier bain', 'Snorkeling léger', 'Retour Marina Hramina'], tags: ['Retour', 'Baignade'] }
       ]
     });
 
@@ -2533,16 +4082,6 @@
     };
     tripDays.forEach(day => day.pois.forEach(poi => { if (photoFixes[poi.id]) poi.image = photoFixes[poi.id]; }));
 
-    const day6 = tripDays.find(d => d.day === 6);
-    if (day6 && !day6.pois.some(p => p.id === 'j6-golubinka')) {
-      day6.pois.push({
-        id:'j6-golubinka', name:'Golubinka · grotte marine de Brbinjšćica', type:'activite',
-        coords:[44.061333,14.979167], image:VERIFIED_EMBEDDED_IMAGES.golubinka, credit:'Visit-Croatia.hr',
-        intro:'Option aventure à substituer à une partie du nord de l’île : accès uniquement par la mer, idéalement en kayak accompagné et tôt le matin.',
-        activities:['Kayak depuis Brbinjšćica ou Veli Žal', 'Entrée dans la grotte uniquement par mer calme', 'Snorkeling et petite plage intérieure'],
-        tags:['Grotte marine', 'Kayak', 'Météo indispensable']
-      });
-    }
 
     Object.assign(tripDays.find(d => d.day === 4), { railImage: LOCAL_IMAGES.img6 });
     Object.assign(tripDays.find(d => d.day === 5), { railImage: commons('Boats in the bay Mir, Luka Telašćica.jpg') });
@@ -2763,8 +4302,8 @@
       { id:'snorkel-telascica', day:5, kind:'snorkel', icon:'🤿', name:'Baie de Mir · snorkeling marin', coords:[43.88948,15.16196], price:'Entrée Telašćica obligatoire', url:'https://pp-telascica.hr/rules-of-conduct-in-the-nature-park/?lang=en', text:'Snorkeling dans la mer de la baie, pas dans le lac salé pour chercher la faune marine. Ne rien prélever et respecter les zones protégées.' },
       { id:'park-veli-zal', day:6, kind:'parking', icon:'🅿️', name:'Accès / parking Veli Žal', coords:[44.097839,14.926318], price:'Parking saisonnier possible', url:'https://www.google.com/maps/search/?api=1&query=Veli+Zal+Dugi+Otok', text:'Accès routier balisé à la grande plage de galets et sable.' },
       { id:'snorkel-veli-zal', day:6, kind:'snorkel', icon:'🤿', name:'Veli Žal · bords rocheux', coords:[44.097839,14.926318], price:'Gratuit', url:'https://www.dugiotok.hr/en/activities-outdoor', text:'Eau très claire ; viser les extrémités rocheuses plutôt que le fond sableux central.' },
-      { id:'cave-golubinka', day:6, kind:'cave', icon:'🕳️', name:'Golubinka · grotte marine', coords:[44.061333,14.979167], price:'Accès libre, guide vivement conseillé', url:'https://www.adamo.hr/things-to-do/kayak-trips-to-golubinka-cave', text:'Accessible uniquement depuis la mer. Visite tôt le matin, sans vent ni vagues. Le moyen le plus sûr est un kayak guidé.' },
-      { id:'cave-dragons-eye', day:6, kind:'cave', icon:'🛶', name:'Zmajevo oko · Brbinjšćica', coords:[44.0566,14.9921], price:'Gratuit · parking très limité', url:'https://zadar-archipelago.hr/attraction/dragons-eye-sea-cave/', text:'Piscine naturelle reliée à la mer par des tunnels sous-marins. Ne pas tenter les passages immergés sans encadrement spécialisé.' },
+      { id:'cave-golubinka', day:6, kind:'cave', icon:'🕳️', name:'Golubinka · grotte marine', coords:[44.05598,14.98577], price:'Accès libre, guide vivement conseillé', url:'https://www.adamo.hr/things-to-do/kayak-trips-to-golubinka-cave', text:'Accessible uniquement depuis la mer. Visite tôt le matin, sans vent ni vagues. Le moyen le plus sûr est un kayak guidé.' },
+      { id:'cave-dragons-eye', day:6, kind:'cave', icon:'🛶', name:'Zmajevo oko · Brbinjšćica', coords:[44.05453,14.98742], price:'Gratuit · parking très limité', url:'https://zadar-archipelago.hr/attraction/dragons-eye-sea-cave/', text:'Piscine naturelle reliée à la mer par des tunnels sous-marins. Ne pas tenter les passages immergés sans encadrement spécialisé.' },
       { id:'snorkel-levrnaka', day:7, kind:'snorkel', icon:'🤿', name:'Lojena · Levrnaka', coords:[43.820879,15.250244], price:'Inclus si l’excursion y fait escale', url:'https://www.google.com/maps/search/?api=1&query=Lojena+Levrnaka', text:'Bonne eau claire ; demander à l’opérateur le temps réellement prévu dans l’eau et si l’arrêt est confirmé.' },
       { id:'park-nin', day:8, kind:'parking', icon:'🅿️', name:'Parking aux abords de Nin', coords:[44.2415,15.1814], price:'Parkings publics autour de l’îlot historique', url:'https://www.google.com/maps/search/?api=1&query=Parking+Nin+Croatia', text:'Se garer hors du petit centre piéton et entrer à pied.' },
       { id:'park-hramina', day:9, kind:'parking', icon:'🅿️', name:'Parking Marina Hramina', coords:[43.826414,15.593425], price:'Selon zone / marina', url:'https://www.google.com/maps/search/?api=1&query=Marina+Hramina+parking', text:'Pratique pour le retrait du bateau et le briefing du loueur.' },
@@ -2905,8 +4444,8 @@
       { terms:['sveti filip'], coords:[43.9648,15.4287], day:4 },
       { terms:['konoba regula','forketa','spageritimo','sali','adamo'], coords:[43.9394,15.1625], day:5 },
       { terms:['telascica','podugopolje','lac mir'], coords:[43.9008,15.1590], day:5 },
-      { terms:['gorgonia','verunic'], coords:[44.1425,14.8998], day:6 },
-      { terms:['veli rat'], coords:[44.1461,14.8862], day:6 },
+      { terms:['gorgonia','verunic'], coords:[44.142983,14.856863], day:6 },
+      { terms:['veli rat'], coords:[44.152028,14.820222], day:6 },
       { terms:['kornati','levrnaka','dejeuner de excursion'], coords:[43.8461,15.2784], day:7 },
       { terms:['kanata','marinero','betina','cafe du port'], coords:[43.8265,15.6023], day:8 },
       { terms:['gligora kolan','sir ana gligora','sirna gligora'], coords:[44.4952,14.9535], day:8 },
@@ -3025,19 +4564,45 @@
 
     function renderBookingTools() {
       const root = document.getElementById('booking-tools');
+      const bookings = [
+        { icon:'⛴️', title:'Ferries du séjour', meta:'J2 · J4 · J5/J8', price:'116,60 €', status:'À réserver', tone:'todo', detail:'Ugljan A/R : <b>20 €</b> · Pašman A/R piétons : <b>14 €</b> · Dugi Otok A/R avec voiture : <b>82,60 €</b>. Montants calculés pour 2 adultes et une voiture de 5 m maximum.' },
+        { icon:'🚲', title:'Vélos à Ugljan', meta:'Jour 2 · Preko', price:'40–80 €', status:'À réserver', tone:'todo', detail:'Deux vélos classiques pour la journée : <b>40 €</b>. Deux vélos électriques : environ <b>80 €</b>. Réserver auprès d’un loueur à Preko.' },
+        { icon:'🏞️', title:'Entrée à Paklenica', meta:'Jour 3 · Ulaz 1', price:'≈ 25 €', status:'À vérifier', tone:'check', detail:'Deux entrées adultes et le véhicule : environ <b>25 €</b>. La grotte Manita Peć n’est pas incluse et n’est pas prévue dans cette journée.' },
+        { icon:'🛶', title:'Kayak à Pašman', meta:'Jour 4 · Tkon', price:'≈ 64 €', status:'À réserver', tone:'todo', detail:'Ferry A/R pour 2 adultes : <b>14 €</b>. Kayak tandem jusqu’à <b>50 € pour 4 h</b>. Vérifier le vent et les horaires du dernier ferry.' },
+        { icon:'🌊', title:'Telašćica et kayak', meta:'Jour 5 · Dugi Otok', price:'16–70 €', status:'À choisir', tone:'option', detail:'Accès terrestre indicatif : environ <b>16 € pour 2</b>. Kayak tandem : <b>40 € la journée</b>, ou pack entrée et transfert autour de <b>70 € pour 2</b>.' },
+        { icon:'🛥️', title:'Excursion dans les Kornati', meta:'Jour 7 · Petit groupe', price:'≈ 140 €', status:'À réserver', tone:'todo', detail:'Sortie en petit bateau jusqu’à 12 personnes : environ <b>70 € par personne</b>, soit <b>140 € pour 2</b>, déjeuner et entrées inclus selon la formule.' },
+        { icon:'🧀', title:'Fromagerie Gligora', meta:'Jour 8 option · Pag ou Zadar', price:'15 € / adulte', status:'Optionnel', tone:'option', detail:'La visite à Kolan constitue un gros détour. Une dégustation ou un achat est aussi possible dans les boutiques Gligora de Zadar.' },
+        { icon:'🚤', title:'Bateau sans permis à Murter', meta:'Jour 9 · Murter', price:'Dès 130 €', status:'À réserver', tone:'todo', detail:'Moto Sport : à partir de <b>130 € pour 9 h 30</b>, jusqu’à 6 personnes. Carburant en supplément. Solution de repli : kayak autour de <b>40 € la journée</b>.' }
+      ];
+
       root.innerHTML = `
-        <h2>Réservations prioritaires et budgets déjà chiffrés</h2>
-        <p>Montants calculés pour 2 adultes, hors repas et carburant du bateau. La voiture est supposée mesurer au maximum 5 m de long et 2 m de haut.</p>
-        <div class="booking-grid">
-          <article class="booking-card"><strong>⛴️ Ferries du séjour</strong><p>Ugljan A/R : <b>20 €</b> · Pašman A/R piétons : <b>14 €</b> · Dugi Otok A/R avec voiture : <b>82,60 €</b>.<br><b>Total ferries prévu : 116,60 €.</b></p></article>
-          <article class="booking-card"><strong>🚲 J2 Ugljan</strong><p>Deux vélos classiques 1–10 h : <b>40 €</b>. Deux e-bikes : environ <b>80 €</b>. Réserver à Preko.</p></article>
-          <article class="booking-card"><strong>🛶 J4 Pašman</strong><p>Ferry 2 adultes A/R : <b>14 €</b>. Kayak tandem jusqu’à <b>50 € / 4 h</b>. Budget repère : <b>64 €</b>.</p></article>
-          <article class="booking-card"><strong>🏞️ Paklenica</strong><p>2 entrées adultes + véhicule : environ <b>25 €</b>. Manita Peć non incluse et non recommandée ce jour-là.</p></article>
-          <article class="booking-card"><strong>🌊 Telašćica</strong><p>Accès terrestre indicatif : environ <b>16 € / 2</b>. Kayak tandem : <b>40 € / jour</b>, ou pack entrée/transfert <b>70 € / 2</b>.</p></article>
-          <article class="booking-card"><strong>🛥️ Kornati</strong><p>Petit bateau jusqu’à 12 personnes : <b>70 € / personne</b>, soit <b>140 € / 2</b>, déjeuner et entrées inclus.</p></article>
-          <article class="booking-card"><strong>🚤 J9 Murter sans permis</strong><p>Moto Sport : <b>à partir de 130 €</b> pour 9 h 30, jusqu’à 6 personnes. Carburant en supplément. Kayak de secours : <b>40 € / jour</b>.</p></article>
-          <article class="booking-card"><strong>🧀 Gligora</strong><p>Visite de la fromagerie de Kolan : <b>15 € / adulte</b>. Gros détour ; achat/dégustation possible directement dans les boutiques de Zadar.</p></article>
-        </div>`;
+        <details class="booking-accordion">
+          <summary class="booking-summary">
+            <span class="booking-summary-icon">✓</span>
+            <span class="booking-summary-copy">
+              <strong>Préparer les réservations</strong>
+              <small>${bookings.length} éléments · ferries, activités et entrées</small>
+            </span>
+            <span class="booking-summary-total">Budget repère <b>≈ 500 €</b></span>
+            <span class="booking-summary-arrow" aria-hidden="true">⌄</span>
+          </summary>
+          <div class="booking-content">
+            <p class="booking-intro">Montants calculés pour 2 adultes, hors repas et carburant du bateau. Ouvre une ligne pour afficher le détail.</p>
+            <div class="booking-list">
+              ${bookings.map(item => `
+                <details class="booking-item">
+                  <summary>
+                    <span class="booking-item-icon">${item.icon}</span>
+                    <span class="booking-item-main"><strong>${item.title}</strong><small>${item.meta}</small></span>
+                    <span class="booking-status booking-status-${item.tone}">${item.status}</span>
+                    <b class="booking-price">${item.price}</b>
+                    <span class="booking-item-arrow" aria-hidden="true">⌄</span>
+                  </summary>
+                  <div class="booking-item-content"><p>${item.detail}</p></div>
+                </details>`).join('')}
+            </div>
+          </div>
+        </details>`;
     }
 
     function difficultyMeta(rhythm = '') {
@@ -3057,11 +4622,24 @@
       3: 'Grand trail à Paklenica',
       4: 'Pašman en kayak autonome',
       5: 'Dugi Otok + Telašćica',
-      6: 'Nord de Dugi Otok',
+      6: 'Dragon’s Eye + nord de Dugi Otok',
       7: 'Kornati en petit groupe',
       8: 'Nin + arrivée à Murter',
       9: 'Bateau sans permis autour de Murter',
       10: 'Matinée libre + aéroport'
+    };
+
+    const DAY_CARD_LABELS = {
+      1: 'Visite',
+      2: 'Vélo',
+      3: 'Trail',
+      4: 'Kayak',
+      5: 'Ferry & parc',
+      6: 'Plage & plongeons',
+      7: 'Excursion bateau',
+      8: 'Village & route',
+      9: 'Bateau',
+      10: 'Dernier bain'
     };
 
 
@@ -3127,7 +4705,7 @@
       if (!video) return '';
       const watchUrl = youtubeWatchUrl(video.id);
       const thumbnail = `https://i.ytimg.com/vi/${encodeURIComponent(video.id)}/hqdefault.jpg`;
-      return `
+      const content = `
         <section class="day-video" aria-label="Vidéo d’inspiration pour le jour ${day.day}">
           <div class="video-shell" data-video-shell>
             <button class="video-launch" type="button" data-inline-video="${escapeAttribute(video.id)}" data-video-title="${escapeAttribute(video.title)}" aria-label="Lire directement dans la page : ${escapeAttribute(video.title)}">
@@ -3137,15 +4715,15 @@
             </button>
           </div>
           <div class="video-copy">
-            <small>🎬 Vidéo d’inspiration · J${day.day}</small>
+            <small>Vidéo d’inspiration · J${day.day}</small>
             <h3>${video.title}</h3>
             <p>${video.text}</p>
             <div class="video-actions">
               <a class="video-link" href="${watchUrl}" target="_blank" rel="noopener">Ouvrir sur YouTube ↗</a>
-              <span class="video-local-note">Lecture intégrée disponible avec le lanceur local fourni</span>
             </div>
           </div>
         </section>`;
+      return content;
     }
 
     function inlineYoutubeUrl(videoId) {
@@ -3194,6 +4772,23 @@
       });
     }
 
+
+    function renderDaySwitcher() {
+      const root = document.getElementById('day-switcher');
+      if (!root) return;
+      root.innerHTML = `<div class="day-switch-grid">${tripDays.map(day => `
+        <button class="day-switch-card${day.day === 1 ? ' active' : ''}" type="button" data-day-switch="${day.day}" style="--day-color:${COLORS[day.day]}">
+          <img src="${day.railImage || day.pois[0].image}" alt="Jour ${day.day} · ${RAIL_TITLES[day.day] || day.title}" loading="lazy" data-photo-key="switch-${day.day}" data-fallback-title="${RAIL_TITLES[day.day] || day.title}">
+          <span class="day-switch-copy">
+            <span class="day-switch-lodging">Logement ${day.sleep}</span>
+            <strong class="day-switch-date">Jour ${day.day} · ${day.date}</strong>
+            <span class="day-switch-theme">${DAY_CARD_LABELS[day.day] || 'Programme'}</span>
+            <em class="day-switch-title">${RAIL_TITLES[day.day] || day.title}</em>
+          </span>
+        </button>`).join('')}</div>`;
+      bindPhotoFallbacks(root);
+    }
+
     function renderDayRail() {
       const root = document.getElementById('day-rail-list');
       root.innerHTML = tripDays.map(day => {
@@ -3212,11 +4807,21 @@
 
     function renderNavigation() {
       const nav = document.getElementById('day-nav');
+      if (!nav) return;
+      const mobileLabels = {
+        1: 'Zadar',
+        2: 'Vélo',
+        3: 'Trail',
+        4: 'Kayak',
+        5: 'Telašćica',
+        6: 'Dragon',
+        7: 'Kornati',
+        8: 'Nin',
+        9: 'Bateau',
+        10: 'Départ'
+      };
       nav.innerHTML = tripDays.map(day => `
-        <a class="day-link" href="#day-${day.day}" data-day-link="${day.day}">
-          <strong>J${day.day} · ${day.date.split(' ')[0]}</strong>
-          <span>${day.title}</span>
-        </a>`).join('');
+        <button class="day-link" type="button" data-day-link="${day.day}" aria-label="Jour ${day.day} · ${day.date} · ${mobileLabels[day.day] || day.title}">J${day.day} - ${mobileLabels[day.day] || ''}</button>`).join('');
     }
 
     function renderDays() {
@@ -3229,18 +4834,20 @@
               <span class="poi-index">J${day.day}.${index + 1}</span>
             </div>
             <div class="poi-copy">
-              <h3>${poi.name}</h3>
+              <div class="poi-title-row">
+                <h3>${poi.name}</h3>
+                <button class="poi-map-icon focus-poi" type="button" data-focus-poi="${poi.id}" aria-label="Localiser ${poi.name} sur la carte" title="Localiser sur la carte">⌖</button>
+              </div>
               <p>${poi.intro}</p>
               <div class="chips">${poi.tags.map(tag => `<span class="chip">${tag}</span>`).join('')}</div>
               <div class="poi-actions">
-                <a class="mini-link" href="${externalMapUrl(poi.coords)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ Google Maps</a>
-                <button class="mini-link focus-poi" type="button" data-focus-poi="${poi.id}">⌖ Voir sur la carte</button>
+                <a class="mini-link" href="${externalMapUrl(poi.coords)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Google Maps ↗</a>
               </div>
             </div>
           </article>`).join('');
 
         return `
-          <article class="day-card panel" id="day-${day.day}" data-day="${day.day}" style="--day-color:${COLORS[day.day]}">
+          <article class="day-card panel${day.day === 1 ? ' active' : ''}" id="day-${day.day}" data-day="${day.day}" style="--day-color:${COLORS[day.day]}" ${day.day === 1 ? '' : 'hidden'}>
             <header class="day-head">
               <div class="day-label-row">
                 <div class="day-label-group">
@@ -3259,12 +4866,15 @@
             </header>
             <div class="day-body">
               <div class="timeline">${day.schedule.map(row => `<div class="timeline-row"><time>${row[0]}</time><span>${row[1]}</span></div>`).join('')}</div>
-              ${renderDayVideo(day)}
               <div class="poi-list">${pois}</div>
+              ${renderDayVideo(day)}
               <div class="extras">
-                ${accordionBlock('🍽️', 'Repas conseillé', day.restaurant.name, `<div class="extra"><strong>${renderInteractiveIcon({ icon:'🍽️', name:day.restaurant.name, url:day.restaurant.url }, day.day, 'inline-map-icon')} ${day.restaurant.name}</strong><p><a href="${day.restaurant.url}" target="_blank" rel="noopener">Voir le restaurant ↗</a><br>${day.restaurant.text}</p></div>`, 'extra-accordion')}
-                ${accordionBlock('🤿', 'Baignade / snorkeling', `Conseil J${day.day}`, `<div class="extra"><p>${day.snorkel}</p></div>`, 'extra-accordion')}
-                ${accordionBlock('🔎', 'Vérification utile', day.official.label, `<div class="extra"><strong>${renderInteractiveIcon({ icon:'🔎', name:day.official.label, url:day.official.url }, day.day, 'inline-map-icon')} ${day.official.label}</strong><p><a href="${day.official.url}" target="_blank" rel="noopener">Consulter la source ↗</a><br>Vérifier la veille ou le matin même.</p></div>`, 'extra-accordion')}
+                ${accordionBlock('☀️', 'Conseils pratiques de la journée', 'Repas, baignade et vérification utile', `
+                  <div class="day-advice-grid">
+                    <div class="extra"><span class="advice-kicker">🍽️ Repas conseillé</span><strong>${renderInteractiveIcon({ icon:'🍽️', name:day.restaurant.name, url:day.restaurant.url }, day.day, 'inline-map-icon')} ${day.restaurant.name}</strong><p><a href="${day.restaurant.url}" target="_blank" rel="noopener">Voir le restaurant ↗</a><br>${day.restaurant.text}</p></div>
+                    <div class="extra"><span class="advice-kicker">🤿 Baignade / snorkeling</span><p>${day.snorkel}</p></div>
+                    <div class="extra"><span class="advice-kicker">🔎 À vérifier</span><strong>${renderInteractiveIcon({ icon:'🔎', name:day.official.label, url:day.official.url }, day.day, 'inline-map-icon')} ${day.official.label}</strong><p><a href="${day.official.url}" target="_blank" rel="noopener">Consulter la source ↗</a><br>Vérifier la veille ou le matin même.</p></div>
+                  </div>`, 'advice-accordion')}
               </div>
               ${renderDayDetails(day)}
             </div>
@@ -3346,6 +4956,7 @@
 
     renderNavigation();
     renderBookingTools();
+    renderDaySwitcher();
     renderDays();
     renderDayRail();
     renderRegionalSuggestions();
@@ -3375,6 +4986,7 @@
       zoomControl: true,
       preferCanvas: true
     });
+    map.zoomControl.setPosition('topright');
     L.control.layers({ 'Carte claire': baseLight, 'Topographique': baseTopo }, null, { position: 'topright', collapsed: true }).addTo(map);
 
     L.control.scale({ imperial: false, position: 'bottomleft' }).addTo(map);
@@ -3450,7 +5062,6 @@
     const allBounds = L.latLngBounds([]);
     let activeDay = 1;
     let activePoi = tripDays[0].pois[0].id;
-    let hoverCloseTimer = null;
     let programmaticScroll = false;
 
     function markerIcon(day, type, isActive = false) {
@@ -3473,7 +5084,7 @@
           <h4>${poi.name}</h4>
           <p>${poi.intro}</p>
           <ul>${poi.activities.map(item => `<li>${item}</li>`).join('')}</ul>
-          <div class="popup-hint">Cliquer sur le marqueur pour ouvrir le descriptif ↙</div>
+          <div class="popup-hint">Cliquer sur le marqueur pour afficher et zoomer ↙</div>
         </div>`;
     }
 
@@ -3484,17 +5095,9 @@
       allBounds.extend(poi.coords);
       markerById.set(poi.id, marker);
 
-      marker.on('mouseover', () => {
-        window.clearTimeout(hoverCloseTimer);
-        marker.openPopup();
-        setActivePoi(poi.id, { pan: false, scroll: false, openPopup: false });
+      marker.on('click', () => {
+        setActivePoi(poi.id, { pan: true, scroll: true, openPopup: true });
       });
-      marker.on('mouseout', () => {
-        hoverCloseTimer = window.setTimeout(() => {
-          if (!marker.getPopup()?._container?.matches(':hover')) marker.closePopup();
-        }, 220);
-      });
-      marker.on('click', () => setActivePoi(poi.id, { pan: true, scroll: true, openPopup: true }));
     });
 
     tripDays.forEach(day => {
@@ -3526,7 +5129,8 @@
         route.setStyle({ opacity: key === activeDay ? .92 : .18, weight: key === activeDay ? 6 : 3 });
         if (key === activeDay) route.bringToFront();
       });
-      document.querySelectorAll('.day-card').forEach(el => el.classList.toggle('active', Number(el.dataset.day) === activeDay));
+      document.querySelectorAll('.day-card').forEach(el => { const isActive = Number(el.dataset.day) === activeDay; el.classList.toggle('active', isActive); el.hidden = !isActive; });
+      document.querySelectorAll('[data-day-switch]').forEach(el => el.classList.toggle('active', Number(el.dataset.daySwitch) === activeDay));
       document.querySelectorAll('[data-day-link]').forEach(el => el.classList.toggle('active', Number(el.dataset.dayLink) === activeDay));
       document.querySelectorAll('[data-rail-day]').forEach(el => el.classList.toggle('active', Number(el.dataset.railDay) === activeDay));
       const railList = document.getElementById('day-rail-list');
@@ -3537,7 +5141,8 @@
       }
 
       const bounds = dayBounds(activeDay);
-      if (bounds?.isValid()) map.fitBounds(bounds, { padding: [70, 70], maxZoom: 11.7, animate, duration: .65 });
+      const dayFitMaxZoom = { 1: 14.8, 2: 13.9, 3: 14.6, 4: 14.8, 5: 13.7, 6: 13.6, 7: 13.6, 8: 12.6, 9: 13.9, 10: 12.8 };
+      if (bounds?.isValid()) map.fitBounds(bounds, { padding: [70, 70], maxZoom: dayFitMaxZoom[activeDay] || 13.8, animate, duration: .65 });
     }
 
     function setActivePoi(poiId, options = {}) {
@@ -3555,7 +5160,7 @@
       });
       document.querySelectorAll('.poi-card').forEach(el => el.classList.toggle('active', el.dataset.poi === poiId));
 
-      if (pan) map.flyTo(poi.coords, Math.max(map.getZoom(), 16.5), { duration: .72, easeLinearity: .22 });
+      if (pan) map.flyTo(poi.coords, Math.max(map.getZoom(), 17), { duration: .72, easeLinearity: .22 });
       if (openPopup) marker.openPopup();
       if (scroll) {
         const target = document.getElementById(poiId);
@@ -3637,6 +5242,33 @@
     });
 
 
+    document.querySelectorAll('[data-day-switch]').forEach(button => {
+      button.addEventListener('click', () => {
+        const dayNumber = Number(button.dataset.daySwitch);
+        focusDay(dayNumber, true);
+        const target = document.getElementById('days');
+        if (target) {
+          programmaticScroll = true;
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          window.setTimeout(() => { programmaticScroll = false; }, 700);
+        }
+      });
+    });
+
+    document.querySelectorAll('[data-day-link]').forEach(link => {
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        const dayNumber = Number(link.dataset.dayLink);
+        focusDay(dayNumber, true);
+        const target = document.getElementById(`day-${dayNumber}`);
+        if (target) {
+          programmaticScroll = true;
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          window.setTimeout(() => { programmaticScroll = false; }, 700);
+        }
+      });
+    });
+
     document.querySelectorAll('[data-rail-day]').forEach(button => {
       button.addEventListener('click', () => {
         const dayNumber = Number(button.dataset.railDay);
@@ -3675,13 +5307,12 @@
       const compact = window.matchMedia('(max-width: 1220px)').matches;
       const header = document.querySelector('.topbar');
       if (compact && header) {
-        const headerHeight = Math.ceil(header.getBoundingClientRect().height || 42);
+        const headerHeight = Math.ceil(header.getBoundingClientRect().height || 0);
         document.documentElement.style.setProperty('--mobile-header-real-h', `${headerHeight}px`);
       }
 
-      if (compact && mobileMapColumn && mobileMapColumn.parentNode !== document.body) {
-        document.body.appendChild(mobileMapColumn);
-      } else if (!compact && mobileMapColumn && mobileMapHomeParent && mobileMapColumn.parentNode === document.body) {
+      // La carte reste dans la grille : aucun déplacement dans <body>.
+      if (mobileMapColumn && mobileMapHomeParent && mobileMapColumn.parentNode !== mobileMapHomeParent) {
         mobileMapHomeParent.insertBefore(mobileMapColumn, mobileMapHomeNext);
       }
 
@@ -3691,20 +5322,36 @@
     }
 
     function switchMobileView(view) {
-      if (window.matchMedia('(max-width: 1220px)').matches) {
-        document.body.classList.remove('mobile-map-mode');
-        window.setTimeout(() => map.invalidateSize(), 80);
+      const compact = window.matchMedia('(max-width: 1220px)').matches;
+      const mapMode = view === 'map';
+      if (!compact) {
+        document.body.classList.toggle('mobile-map-mode', mapMode);
+        document.getElementById('show-map').classList.toggle('active', mapMode);
+        document.getElementById('show-program').classList.toggle('active', !mapMode);
+        if (mapMode) window.setTimeout(() => { map.invalidateSize(); focusDay(activeDay, false); }, 120);
+        syncMobileDaybar();
         return;
       }
-      const mapMode = view === 'map';
       document.body.classList.toggle('mobile-map-mode', mapMode);
       document.getElementById('show-map').classList.toggle('active', mapMode);
       document.getElementById('show-program').classList.toggle('active', !mapMode);
-      if (mapMode) window.setTimeout(() => { map.invalidateSize(); focusDay(activeDay, false); }, 120);
+      window.setTimeout(() => { map.invalidateSize(); if (mapMode) focusDay(activeDay, false); syncMobileDaybar(); }, 90);
     }
 
     document.getElementById('show-map').addEventListener('click', () => switchMobileView('map'));
     document.getElementById('show-program').addEventListener('click', () => switchMobileView('program'));
+
+    function syncMobileDaybar() {
+      const isMobile = window.matchMedia('(max-width: 760px)').matches;
+      if (!isMobile) {
+        document.body.classList.remove('mobile-daybar-active');
+        return;
+      }
+      const shouldShow = document.body.classList.contains('mobile-map-mode') || window.scrollY > 36;
+      document.body.classList.toggle('mobile-daybar-active', shouldShow);
+    }
+
+    window.addEventListener('scroll', syncMobileDaybar, { passive: true });
 
     window.addEventListener('resize', () => {
       syncMobileMapDock();
@@ -3713,14 +5360,19 @@
         miniMaps.forEach(mini => mini.invalidateSize());
       }, 100);
       if (!window.matchMedia('(max-width: 1220px)').matches) document.body.classList.remove('mobile-map-mode');
+      syncMobileDaybar();
     });
 
-    let collapsed = false;
-    document.getElementById('collapse-days').addEventListener('click', event => {
-      collapsed = !collapsed;
-      document.querySelectorAll('.day-body').forEach(body => { body.hidden = collapsed; });
-      event.currentTarget.textContent = collapsed ? 'Tout déplier' : 'Tout replier';
-    });
+    const collapseButton = document.getElementById('collapse-days');
+    if (collapseButton) {
+      let collapsed = false;
+      collapseButton.addEventListener('click', event => {
+        collapsed = !collapsed;
+        const activeBody = document.querySelector('.day-card.active .day-body');
+        if (activeBody) activeBody.hidden = collapsed;
+        event.currentTarget.textContent = collapsed ? 'Tout déplier' : 'Tout replier';
+      });
+    }
 
     function showToast(message) {
       const toast = document.getElementById('toast');
@@ -3729,7 +5381,7 @@
       window.setTimeout(() => toast.classList.remove('show'), 1800);
     }
 
-    window.addEventListener('orientationchange', () => window.setTimeout(syncMobileMapDock, 120));
+    window.addEventListener('orientationchange', () => { window.setTimeout(syncMobileMapDock, 120); window.setTimeout(syncMobileDaybar, 140); });
     if (window.visualViewport) window.visualViewport.addEventListener('resize', syncMobileMapDock);
 
     window.addEventListener('load', () => {
@@ -3739,6 +5391,7 @@
       fitAll();
       focusDay(1, false);
       setActivePoi(activePoi, { pan: false });
+      syncMobileDaybar();
       showToast('Roadbook Zadar chargé');
     });
   </script>
