@@ -3460,6 +3460,50 @@
   }
 </style>
 
+
+<style id="v102-mobile-popup-expanded-map">
+  @media (max-width: 1220px) {
+    /* Une popup POI fait souvent plus de 300 px de haut. La carte s'agrandit
+       avant son ouverture afin que Leaflet puisse réellement la positionner. */
+    html body.poi-popup-open {
+      --mobile-map-final-h: clamp(420px, 64dvh, 620px);
+    }
+
+    html body.poi-popup-open .layout > .map-column,
+    html body.poi-popup-open.mobile-map-mode .layout > .map-column {
+      height: var(--mobile-map-final-h) !important;
+      min-height: var(--mobile-map-final-h) !important;
+    }
+
+    html body.poi-popup-open .itinerary,
+    html body.poi-popup-open.mobile-map-mode .itinerary {
+      padding-top: calc(var(--mobile-map-final-h) + 8px) !important;
+    }
+
+    html body.poi-popup-open .mobile-daybar-scroll {
+      max-height: calc(var(--mobile-map-final-h) - 62px) !important;
+    }
+
+    /* Dernier filet de sécurité pour les petits écrans : la popup reste
+       consultable même si son contenu dépasse encore la hauteur disponible. */
+    .leaflet-popup-content {
+      max-height: calc(var(--mobile-map-final-h) - 76px) !important;
+      overflow-y: auto !important;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+    .leaflet-popup-content-wrapper {
+      max-height: calc(var(--mobile-map-final-h) - 56px) !important;
+    }
+  }
+
+  @media (max-width: 1220px) and (orientation: landscape) {
+    html body.poi-popup-open {
+      --mobile-map-final-h: calc(100dvh - 4px);
+    }
+  }
+</style>
+
 </head>
 <body>
   <div class="page">
@@ -5115,11 +5159,32 @@
     }
 
     let activePopupMarker = null;
+    let popupResizeTimer = null;
+
+    function resizeMapForPopup(expanded, callback) {
+      const compact = window.matchMedia('(max-width: 1220px)').matches;
+      if (!compact) {
+        callback?.();
+        return;
+      }
+
+      window.clearTimeout(popupResizeTimer);
+      document.body.classList.toggle('poi-popup-open', expanded);
+
+      // Deux frames garantissent que la nouvelle hauteur CSS est calculée avant
+      // invalidateSize(), indispensable sur Safari et Chrome mobile.
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          map.invalidateSize({ pan: false });
+          callback?.();
+        });
+      });
+    }
 
     function centerMarkerAndOpenPopup(marker, coords, zoom = 17) {
       const token = ++markerInteractionToken;
       const compact = window.matchMedia('(max-width: 1220px)').matches;
-      suppressAutomaticMapFitUntil = Math.max(suppressAutomaticMapFitUntil, Date.now() + 2500);
+      suppressAutomaticMapFitUntil = Math.max(suppressAutomaticMapFitUntil, Date.now() + 3000);
       activePopupMarker = marker;
 
       map.stop();
@@ -5128,25 +5193,27 @@
 
       const popup = marker.getPopup();
       if (popup) {
-        popup.options.autoPan = false;
-        popup.options.keepInView = false;
+        popup.options.autoPan = true;
+        popup.options.keepInView = true;
         popup.options.closeOnClick = false;
         popup.options.autoClose = true;
+        popup.options.autoPanPaddingTopLeft = compact ? L.point(106, 14) : L.point(20, 20);
+        popup.options.autoPanPaddingBottomRight = compact ? L.point(14, 18) : L.point(20, 20);
       }
 
-      let opened = false;
       const reveal = () => {
-        if (opened || token !== markerInteractionToken || activePopupMarker !== marker || !marker._map) return;
-        opened = true;
+        if (token !== markerInteractionToken || activePopupMarker !== marker || !marker._map) return;
         marker.setZIndexOffset(1200);
         marker.openPopup();
       };
 
       if (compact) {
-        // Un déplacement non animé est plus fiable avec Safari/Chrome mobile :
-        // la popup n'est ouverte qu'une seule fois, après le rendu de la carte.
-        map.setView(coords, zoom, { animate: false });
-        window.setTimeout(reveal, 45);
+        resizeMapForPopup(true, () => {
+          if (token !== markerInteractionToken || activePopupMarker !== marker) return;
+          map.setView(coords, zoom, { animate: false });
+          map.invalidateSize({ pan: false });
+          window.setTimeout(reveal, 70);
+        });
       } else {
         map.once('moveend', reveal);
         map.flyTo(coords, Math.max(map.getZoom(), zoom), { duration: .65, easeLinearity: .22 });
@@ -5210,21 +5277,22 @@
     });
 
     map.on('popupclose', event => {
-      const compact = window.matchMedia('(max-width: 1220px)').matches;
-      if (!compact || !activePopupMarker || event.popup !== activePopupMarker.getPopup()) return;
-      // Ignore only a close emitted in the same interaction frame. A normal
-      // close button or the opening of another popup remains fully functional.
-      const token = markerInteractionToken;
-      window.setTimeout(() => {
-        if (token === markerInteractionToken && activePopupMarker && activePopupMarker._map && !activePopupMarker.isPopupOpen()) {
-          activePopupMarker.openPopup();
-        }
-      }, 0);
+      if (!activePopupMarker || event.popup !== activePopupMarker.getPopup()) return;
+      activePopupMarker = null;
+      resizeMapForPopup(false, () => {
+        popupResizeTimer = window.setTimeout(() => map.invalidateSize({ pan: false }), 40);
+      });
     });
 
     map.on('popupopen', event => {
-      if (activePopupMarker && event.popup === activePopupMarker.getPopup()) {
-        window.setTimeout(() => { activePopupMarker = null; }, 180);
+      const source = event.popup?._source;
+      if (source) activePopupMarker = source;
+      // Recalcul final après insertion du contenu et chargement éventuel de l'image.
+      if (window.matchMedia('(max-width: 1220px)').matches) {
+        window.setTimeout(() => {
+          map.invalidateSize({ pan: false });
+          event.popup.update();
+        }, 90);
       }
     });
 
@@ -5492,7 +5560,10 @@
         map.invalidateSize();
         miniMaps.forEach(mini => mini.invalidateSize());
       }, 100);
-      if (!window.matchMedia('(max-width: 1220px)').matches) document.body.classList.remove('mobile-map-mode');
+      if (!window.matchMedia('(max-width: 1220px)').matches) {
+        document.body.classList.remove('mobile-map-mode');
+        document.body.classList.remove('poi-popup-open');
+      }
       syncMobileDaybar();
     });
 
