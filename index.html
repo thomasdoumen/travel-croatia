@@ -3452,6 +3452,23 @@
       min-height: min(64svh, 560px) !important;
     }
     .leaflet-popup-content { width: min(280px, calc(100vw - 60px)) !important; }
+
+    /* Bulle plus compacte sur mobile : image réduite, textes resserrés. */
+    .popup-image { height: 88px !important; }
+    .popup-copy { padding: 10px 12px 11px !important; }
+    .popup-copy h4 { font-size: .86rem !important; margin-bottom: 3px !important; }
+    .popup-copy p {
+      margin-bottom: 6px !important;
+      font-size: .71rem !important;
+      line-height: 1.35 !important;
+      display: -webkit-box !important;
+      -webkit-line-clamp: 3 !important;
+      -webkit-box-orient: vertical !important;
+      overflow: hidden !important;
+    }
+    .popup-copy ul { font-size: .68rem !important; }
+    .popup-copy li + li { margin-top: 2px !important; }
+    .popup-badge { font-size: .62rem !important; padding: 5px 8px !important; }
   }
 </style>
 
@@ -5106,15 +5123,24 @@
     }
 
     // Sur mobile, la carte est basse (~300px) : on l'agrandit juste avant
-    // d'ouvrir une bulle pour qu'elle ne soit plus coupée, puis on invalide
-    // la taille Leaflet pour qu'il recalcule correctement le positionnement.
-    function openPopupExpanded(marker) {
+    // d'ouvrir une bulle pour qu'elle ne soit plus coupée. On recentre aussi
+    // la carte de façon à placer le point choisi vers le BAS de la carte
+    // agrandie, ce qui laisse toute la place à la bulle qui s'ouvre au-dessus
+    // du marqueur, et garantit qu'elle est entièrement visible.
+    function openPopupExpanded(marker, coords) {
       const isMobile = window.matchMedia('(max-width: 1220px)').matches;
       if (!isMobile) { marker.openPopup(); return; }
       document.body.classList.add('poi-popup-open');
       window.requestAnimationFrame(() => {
         map.invalidateSize({ pan: false });
-        marker.openPopup();
+        if (coords) {
+          const zoom = Math.max(map.getZoom(), 17);
+          const size = map.getSize();
+          const targetPoint = map.project(coords, zoom).subtract([0, size.y * 0.30]);
+          const targetCenter = map.unproject(targetPoint, zoom);
+          map.setView(targetCenter, zoom, { animate: true, duration: .45 });
+        }
+        window.setTimeout(() => marker.openPopup(), coords ? 300 : 0);
       });
     }
 
@@ -5134,7 +5160,6 @@
           <h4>${poi.name}</h4>
           <p>${poi.intro}</p>
           <ul>${poi.activities.map(item => `<li>${item}</li>`).join('')}</ul>
-          <div class="popup-hint">Cliquer sur le marqueur pour afficher et zoomer ↙</div>
         </div>`;
     }
 
@@ -5216,12 +5241,22 @@
       });
       document.querySelectorAll('.poi-card').forEach(el => el.classList.toggle('active', el.dataset.poi === poiId));
 
+      const isMobile = window.matchMedia('(max-width: 1220px)').matches;
+
       if (pan) {
         suppressAutomaticMapFitUntil = Math.max(suppressAutomaticMapFitUntil, Date.now() + 1800);
         map.stop();
-        map.flyTo(poi.coords, 17, { duration: .72, easeLinearity: .22 });
+        // Sur mobile avec une bulle à ouvrir, c'est openPopupExpanded qui se
+        // charge du cadrage (agrandissement + point placé en bas) pour éviter
+        // un double mouvement de carte.
+        if (!(isMobile && openPopup)) {
+          map.flyTo(poi.coords, 17, { duration: .72, easeLinearity: .22 });
+        }
       }
-      if (openPopup) window.setTimeout(() => openPopupExpanded(marker), pan ? 260 : 0);
+      if (openPopup) {
+        const delay = (pan && !isMobile) ? 260 : 0;
+        window.setTimeout(() => openPopupExpanded(marker, isMobile ? poi.coords : null), delay);
+      }
       if (scroll) {
         const target = document.getElementById(poiId);
         if (target) {
