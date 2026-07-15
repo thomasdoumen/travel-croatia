@@ -3448,27 +3448,37 @@
     html body.poi-popup-open.mobile-daybar-active .layout > .map-column,
     html body.poi-popup-open.mobile-map-mode .layout > .map-column,
     html body.poi-popup-open.mobile-daybar-active.mobile-map-mode .layout > .map-column {
-      height: min(64svh, 560px) !important;
-      min-height: min(64svh, 560px) !important;
+      height: min(68svh, 520px) !important;
+      min-height: min(68svh, 520px) !important;
     }
-    .leaflet-popup-content { width: min(280px, calc(100vw - 60px)) !important; }
+    .leaflet-popup { max-width: calc(100vw - 28px) !important; }
+    .leaflet-popup-content-wrapper { border-radius: 13px !important; }
+    .leaflet-popup-content { width: min(244px, calc(100vw - 54px)) !important; }
 
     /* Bulle plus compacte sur mobile : image réduite, textes resserrés. */
-    .popup-image { height: 88px !important; }
-    .popup-copy { padding: 10px 12px 11px !important; }
-    .popup-copy h4 { font-size: .86rem !important; margin-bottom: 3px !important; }
+    .popup-image { height: 68px !important; }
+    .popup-copy { padding: 8px 10px 9px !important; }
+    .popup-copy h4 { font-size: .8rem !important; margin-bottom: 2px !important; line-height: 1.16 !important; }
     .popup-copy p {
-      margin-bottom: 6px !important;
-      font-size: .71rem !important;
-      line-height: 1.35 !important;
+      margin-bottom: 5px !important;
+      font-size: .66rem !important;
+      line-height: 1.26 !important;
       display: -webkit-box !important;
-      -webkit-line-clamp: 3 !important;
+      -webkit-line-clamp: 2 !important;
       -webkit-box-orient: vertical !important;
       overflow: hidden !important;
     }
-    .popup-copy ul { font-size: .68rem !important; }
-    .popup-copy li + li { margin-top: 2px !important; }
-    .popup-badge { font-size: .62rem !important; padding: 5px 8px !important; }
+    .popup-copy ul {
+      font-size: .63rem !important;
+      line-height: 1.22 !important;
+      padding-left: 14px !important;
+    }
+    .popup-copy li + li { margin-top: 1px !important; }
+    .popup-badge { font-size: .58rem !important; padding: 4px 7px !important; }
+    .service-popup { padding: 9px 10px !important; }
+    .service-popup h4 { font-size: .82rem !important; line-height: 1.15 !important; }
+    .service-popup p { font-size: .67rem !important; line-height: 1.28 !important; }
+    .service-popup .service-price { font-size: .62rem !important; padding: 4px 7px !important; }
   }
 </style>
 
@@ -5095,7 +5105,7 @@
       const marker = L.marker(service.coords, { icon: serviceIcon(service), riseOnHover: true, keyboard: true });
       marker.bindPopup(`<div class="service-popup"><h4>${service.icon} ${service.name}</h4><span class="service-price">${service.price}</span><p>${service.text}</p><a href="${service.url}" target="_blank" rel="noopener">Site / réservation ↗</a></div>`, {
         maxWidth: 270,
-        autoPan: true,
+        autoPan: false,
         keepInView: true,
         closeOnClick: false
       });
@@ -5158,6 +5168,22 @@
       });
     }
 
+    function positionMarkerForMobilePopup(marker) {
+      const latLng = marker?.getLatLng?.();
+      if (!latLng) return;
+
+      const size = map.getSize();
+      if (!size?.x || !size?.y) return;
+
+      const currentPoint = map.latLngToContainerPoint(latLng);
+      const desiredPoint = L.point(size.x / 2, size.y * 0.74);
+      const delta = currentPoint.subtract(desiredPoint);
+
+      if (Number.isFinite(delta.x) && Number.isFinite(delta.y)) {
+        map.panBy(delta, { animate: false });
+      }
+    }
+
     // Sur mobile, la carte est basse (~300px) : on l'agrandit juste avant
     // d'ouvrir une bulle pour qu'elle ne soit plus coupée. On décale aussi
     // la vue vers le haut (donc le point apparaît plus bas dans la carte
@@ -5184,11 +5210,7 @@
 
         map.invalidateSize({ pan: false });
         try {
-          const size = map.getSize();
-          const offset = Math.round(size.y * 0.28);
-          if (Number.isFinite(offset) && offset > 0) {
-            map.panBy([0, -offset], { animate: false });
-          }
+          positionMarkerForMobilePopup(marker);
         } catch (err) {
           // Repositionnement impossible dans ce cas limite : on ouvre quand
           // même la bulle plutôt que de bloquer l'affichage.
@@ -5272,7 +5294,7 @@
 
     allPois.forEach(poi => {
       const marker = L.marker(poi.coords, { icon: markerIcon(poi.day, poi.type), riseOnHover: true, keyboard: true });
-      marker.bindPopup(popupHtml(poi), { closeButton: true, maxWidth: 290, autoPanPadding: [45, 45] });
+      marker.bindPopup(popupHtml(poi), { closeButton: true, maxWidth: 290, autoPan: false, keepInView: false, autoPanPadding: [45, 45] });
       disableLeafletAutoPopup(marker);
       marker.addTo(map);
       allBounds.extend(poi.coords);
@@ -5438,8 +5460,12 @@
       const poiId = icon.dataset.mapPoi || '';
       infoOpenedService = serviceId && serviceMarkerById.get(serviceId) ? serviceMarkerById.get(serviceId) : null;
       infoOpenedPoi = poiId && markerById.get(poiId) ? markerById.get(poiId) : null;
-      if (infoOpenedService && servicesVisible) infoOpenedService.openPopup();
-      else if (infoOpenedPoi) infoOpenedPoi.openPopup();
+      const infoMarker = (infoOpenedService && servicesVisible) ? infoOpenedService : infoOpenedPoi;
+      if (infoMarker) {
+        if (popupToggleMarker && popupToggleMarker !== infoMarker) popupToggleMarker.closePopup();
+        popupToggleMarker = infoMarker;
+        openPopupAfterMapMove(infoMarker, ++popupActionSequence, 700);
+      }
     }
 
     function hideInfoLocation() {
