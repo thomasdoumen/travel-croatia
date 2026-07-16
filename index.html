@@ -3437,6 +3437,7 @@
       color: #fff !important;
     }
   }
+</style>
 
 <style id="v103-mobile-popup-fit-fix">
   /* Corrige le bug : sur mobile, la carte fixe (~300px) est trop basse pour
@@ -5294,7 +5295,7 @@
 
     allPois.forEach(poi => {
       const marker = L.marker(poi.coords, { icon: markerIcon(poi.day, poi.type), riseOnHover: true, keyboard: true });
-      marker.bindPopup(popupHtml(poi), { closeButton: true, maxWidth: 290, autoPan: false, keepInView: false, autoPanPadding: [45, 45] });
+      marker.bindPopup(popupHtml(poi), { closeButton: true, maxWidth: 290, autoPan: false, keepInView: false, closeOnClick: false, autoPanPadding: [45, 45] });
       disableLeafletAutoPopup(marker);
       marker.addTo(map);
       allBounds.extend(poi.coords);
