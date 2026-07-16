@@ -58,6 +58,34 @@
     opacity: 1 !important;
   }
 </style>
+<style id="v105-mobile-poi-carousel">
+  /* Carousel de journée dans le panneau mobile : navigation entre les
+     points d'une même journée (ex. J7.1 → J7.2 → J7.3) par flèches, points
+     ou glissement (swipe) horizontal. */
+  .sheet-body { touch-action: pan-y; }
+  .sheet-arrow {
+    position: absolute; top: 50%; z-index: 5;
+    display: grid; place-items: center;
+    width: 36px; height: 36px; margin-top: -18px; padding: 0;
+    border: 0; border-radius: 50%;
+    background: rgba(15, 40, 50, .42); color: #fff;
+    font-size: 1.3rem; line-height: 1; cursor: pointer;
+    transition: background .15s ease, opacity .15s ease, transform .15s ease;
+  }
+  .sheet-arrow:active { transform: translateY(-50%) scale(.92); }
+  .sheet-arrow-prev { left: 10px; }
+  .sheet-arrow-next { right: 10px; }
+  .sheet-arrow:disabled { opacity: .25; pointer-events: none; }
+  .sheet-dots {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 10px 14px 0;
+  }
+  .sheet-dot {
+    width: 7px; height: 7px; padding: 0; border: 0; border-radius: 4px;
+    background: var(--line); cursor: pointer; transition: width .15s ease, background .15s ease;
+  }
+  .sheet-dot.active { width: 18px; background: var(--sea); }
+</style>
 </head><body><div class="page"><header class="topbar"><div class="brand"><div class="brand-mark">⌖</div><div class="brand-copy"><strong>Roadbook Zadar</strong><span>Zadar · Murter · Dugi Otok — 24 juillet au 2 août 2026</span></div></div><div class="top-actions"><div class="mobile-switch" aria-label="Changer de vue"><button type="button" id="show-program" class="active">Programme</button><button type="button" id="show-map">Carte</button></div><button type="button" class="btn desktop-only" id="collapse-days">Tout replier</button><button type="button" class="btn" id="print-page">Imprimer</button></div></header><nav class="mobile-daybar" id="mobile-daybar" aria-label="Navigation rapide par journée"><div class="mobile-daybar-title">Jours</div><div class="mobile-daybar-scroll" id="day-nav"></div></nav><div class="layout"><main class="itinerary" id="program-view"><section class="hero panel"><span class="eyebrow">Roadbook · Dalmatie du Nord</span><h1>10 jours entre Zadar, Murter et Dugi Otok</h1><p>Un séjour équilibré entre îles, randonnée, vélo, kayak, snorkeling et villages dalmates, organisé autour de deux bases de vie, avec Zadar en ouverture et pour la dernière nuit.</p><div class="stay-route" aria-label="Les étapes d’hébergement du séjour"><div class="stay-stop"><span>01</span><small>Base principale</small><strong>Zadar</strong><em>5 nuits</em><p class="stay-plan">J1 visite · J2 vélo · J3 trail · J4 kayak · J5 Murter</p></div><div class="stay-arrow" aria-hidden="true">→</div><div class="stay-stop"><span>02</span><small>Parenthèse insulaire</small><strong>Dugi Otok</strong><em>3 nuits</em><p class="stay-plan">J6 arrivée + Dugi Nord · J7 Dugi Sud trail + Dragon’s Eye · J8 Kornati</p></div><div class="stay-arrow" aria-hidden="true">→</div><div class="stay-stop"><span>03</span><small>Dernière nuit</small><strong>Zadar</strong><em>1 nuit</em><p class="stay-plan">J9 retour + Nin ou plage · J10 départ</p></div></div><div class="alert"><span>⚠️</span><div><strong>À vérifier avant chaque journée :</strong> vent et état de la mer pour le kayak, horaires Jadrolinija, ouverture des prestataires, départ exact des excursions et restrictions d’accès aux parcs. Les tracés de la carte sont des repères visuels et non des traces GPS de navigation. Tarifs et horaires vérifiés le 15 juillet 2026 ; disponibilité à confirmer avant réservation.</div></div></section><section class="booking-tools panel" id="booking-tools"></section><section class="day-switcher" id="day-switcher"></section><section class="days" id="days"></section><section class="regional-suggestions panel" id="regional-suggestions"></section><footer class="footer panel">
 Photos chargées depuis Wikimedia Commons avec attribution dans les popups. Fond cartographique OpenStreetMap/CARTO ; les liens de lieux s’ouvrent désormais dans Google Maps. Tarifs vérifiés le 15 juillet 2026 ; les horaires, menus, disponibilités et conditions nautiques peuvent encore évoluer.
 </footer></main><aside class="map-column" id="map-view" aria-label="Carte interactive du séjour"><section class="map-panel panel"><div class="map-toolbar"><div><strong>Carte synchronisée</strong><span>Survol : aperçu · clic : aller au descriptif</span></div><div class="map-buttons"><button type="button" class="btn" id="toggle-services">🅿️ / 🤿 / 🛶 / 🎟️ Points utiles</button><button type="button" class="btn" id="fit-all">Tout voir</button><button type="button" class="btn primary" id="fit-active">Jour actif</button></div></div><div id="map" role="application" aria-label="Carte interactive du parcours"></div><div class="map-footer"><div class="legend" id="legend"></div><div class="map-note">Les marqueurs carrés 🚲, 🛶 et 🚤 indiquent les loueurs. Le bouton « Loueurs » permet de les afficher ou masquer.</div></div></section></aside><aside class="day-rail-column" aria-label="Mini navigation fixe par journée"><section class="day-rail panel"><div class="rail-head"><strong>Les 10 journées</strong></div><div class="rail-list" id="day-rail-list"></div></section></aside></div></div><div class="toast" id="toast" role="status" aria-live="polite"></div><div class="mobile-poi-sheet" id="mobile-poi-sheet" role="dialog" aria-modal="true" aria-label="Informations sur le lieu" aria-hidden="true"><div class="sheet-handle"></div><button type="button" class="sheet-close" id="mobile-poi-sheet-close" aria-label="Fermer">✕</button><div class="sheet-body" id="mobile-poi-sheet-body"></div></div><div class="mobile-poi-sheet-backdrop" id="mobile-poi-sheet-backdrop"></div><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script><script>
@@ -2042,7 +2070,77 @@ Photos chargées depuis Wikimedia Commons avec attribution dans les popups. Fond
     mobileSheetBackdrop?.addEventListener('click', closeMobileSheet);
     window.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeMobileSheet();
+      if (!mobileSheet.classList.contains('open')) return;
+      if (event.key === 'ArrowRight') navigateSheetPoi(1);
+      if (event.key === 'ArrowLeft') navigateSheetPoi(-1);
     });
+
+    // Carousel de journée : navigue vers le point précédent/suivant de la
+    // même journée que le point actuellement affiché dans le panneau.
+    function navigateSheetPoi(direction) {
+      if (!mobileSheetOpenFor) return;
+      const currentPoi = allPois.find(item => item.id === mobileSheetOpenFor);
+      if (!currentPoi) return; // panneau de prestataire, pas de carousel
+      const dayPois = allPois.filter(item => item.day === currentPoi.day);
+      const idx = dayPois.findIndex(item => item.id === currentPoi.id);
+      const nextIdx = idx + direction;
+      if (nextIdx < 0 || nextIdx >= dayPois.length) return;
+      suppressAutomaticMapFitUntil = Date.now() + 1800;
+      setActivePoi(dayPois[nextIdx].id, { pan: true, scroll: false, openPopup: true });
+    }
+
+    mobileSheet.addEventListener('click', event => {
+      const dirBtn = event.target.closest('[data-poi-dir]');
+      if (dirBtn) {
+        if (dirBtn.disabled) return;
+        navigateSheetPoi(Number(dirBtn.dataset.poiDir));
+        return;
+      }
+      const dotBtn = event.target.closest('[data-poi-nav]');
+      if (dotBtn) {
+        suppressAutomaticMapFitUntil = Date.now() + 1800;
+        setActivePoi(dotBtn.dataset.poiNav, { pan: true, scroll: false, openPopup: true });
+      }
+    });
+
+    // Glissement tactile (swipe) horizontal pour naviguer dans le carousel,
+    // sans gêner le défilement vertical normal du panneau.
+    (function setupSheetSwipe() {
+      const SWIPE_THRESHOLD = 46;
+      let startX = 0, startY = 0, tracking = false, decided = false, isHorizontal = false;
+
+      mobileSheetBody.addEventListener('pointerdown', event => {
+        if (event.pointerType === 'mouse' && event.button !== 0) return;
+        startX = event.clientX;
+        startY = event.clientY;
+        tracking = true;
+        decided = false;
+        isHorizontal = false;
+      });
+
+      mobileSheetBody.addEventListener('pointermove', event => {
+        if (!tracking) return;
+        const dx = event.clientX - startX;
+        const dy = event.clientY - startY;
+        if (!decided && (Math.abs(dx) > 12 || Math.abs(dy) > 12)) {
+          decided = true;
+          isHorizontal = Math.abs(dx) > Math.abs(dy) * 1.3;
+        }
+        if (isHorizontal && event.cancelable) event.preventDefault();
+      }, { passive: false });
+
+      function finishSwipe(event) {
+        if (!tracking) return;
+        tracking = false;
+        if (!isHorizontal) return;
+        const dx = event.clientX - startX;
+        if (Math.abs(dx) < SWIPE_THRESHOLD) return;
+        navigateSheetPoi(dx < 0 ? 1 : -1);
+      }
+
+      mobileSheetBody.addEventListener('pointerup', finishSwipe);
+      mobileSheetBody.addEventListener('pointercancel', () => { tracking = false; });
+    })();
 
     let popupActionSequence = 0;
     let activeMapPopup = null;
@@ -2309,11 +2407,21 @@ Photos chargées depuis Wikimedia Commons avec attribution dans les popups. Fond
     }
 
     function sheetHtml(poi) {
+      const dayPois = allPois.filter(item => item.day === poi.day);
+      const idx = dayPois.findIndex(item => item.id === poi.id);
+      const hasCarousel = dayPois.length > 1;
+      const hasPrev = idx > 0;
+      const hasNext = idx > -1 && idx < dayPois.length - 1;
+      const arrows = hasCarousel ? `
+          <button type="button" class="sheet-arrow sheet-arrow-prev" data-poi-dir="-1" aria-label="Point précédent"${hasPrev ? '' : ' disabled'}>‹</button>
+          <button type="button" class="sheet-arrow sheet-arrow-next" data-poi-dir="1" aria-label="Point suivant"${hasNext ? '' : ' disabled'}>›</button>` : '';
+      const dots = hasCarousel ? `
+        <div class="sheet-dots">${dayPois.map((item, i) => `<button type="button" class="sheet-dot${i === idx ? ' active' : ''}" data-poi-nav="${item.id}" aria-label="Aller à J${item.day}.${item.order}"></button>`).join('')}</div>` : '';
       return `
         <div class="sheet-image">
           <img src="${poi.image}" alt="${poi.name}" onerror="this.onerror=null;this.src='${fallbackDataUri(poi.name)}'">
-          <span class="sheet-badge" style="--popup-color:${COLORS[poi.day]}">J${poi.day}.${poi.order}</span>
-        </div>
+          <span class="sheet-badge" style="--popup-color:${COLORS[poi.day]}">J${poi.day}.${poi.order}</span>${arrows}
+        </div>${dots}
         <div class="sheet-copy">
           <h4>${poi.name}</h4>
           <p>${poi.intro}</p>
