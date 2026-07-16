@@ -3483,6 +3483,76 @@
   }
 </style>
 
+<style id="v104-mobile-poi-sheet">
+  /* Panneau d'info mobile : remplace la bulle Leaflet sur mobile, qui était
+     coincée dans une carte trop basse et se retrouvait coupée/invisible
+     selon les appareils. Ce panneau est fixé à l'écran (indépendant de la
+     carte), donc jamais rogné. */
+  .mobile-poi-sheet {
+    display: none;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 40000;
+    background: var(--paper);
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -14px 44px rgba(15, 40, 50, .32);
+    max-height: 68svh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translateY(100%);
+    transition: transform .25s ease;
+    padding-bottom: max(14px, env(safe-area-inset-bottom, 0px));
+  }
+  .mobile-poi-sheet.open { transform: translateY(0); }
+  .sheet-handle {
+    width: 40px; height: 4px; border-radius: 2px;
+    background: var(--line);
+    margin: 10px auto 2px;
+  }
+  .sheet-close {
+    position: absolute; top: 8px; right: 10px;
+    width: 30px; height: 30px; border-radius: 50%;
+    border: none; background: var(--sea-soft); color: var(--sea-dark);
+    font-size: .95rem; line-height: 1; cursor: pointer;
+  }
+  .sheet-body .sheet-image { position: relative; width: 100%; height: 190px; overflow: hidden; }
+  .sheet-body .sheet-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sheet-body .sheet-badge {
+    position: absolute; left: 12px; bottom: 10px;
+    background: var(--popup-color, var(--sea)); color: #fff;
+    font-size: .72rem; font-weight: 800; padding: 5px 9px; border-radius: 999px;
+  }
+  .sheet-body .sheet-copy { padding: 14px 18px 6px; }
+  .sheet-body .sheet-copy h4 { margin: 0 0 6px; font-size: 1.08rem; }
+  .sheet-body .sheet-copy p { margin: 0 0 10px; font-size: .86rem; line-height: 1.5; color: var(--muted); }
+  .sheet-body .sheet-copy ul { margin: 0 0 4px; padding-left: 18px; font-size: .82rem; line-height: 1.5; }
+  .sheet-body .sheet-copy a { color: var(--sea); font-weight: 700; }
+  .sheet-body .service-sheet { padding: 18px; }
+  .sheet-body .service-sheet h4 { margin: 0 0 8px; font-size: 1.05rem; }
+  .sheet-body .service-sheet .service-price {
+    display: inline-block; margin-bottom: 8px; padding: 5px 10px;
+    background: var(--sea-soft); color: var(--sea-dark); border-radius: 999px;
+    font-size: .78rem; font-weight: 800;
+  }
+  .sheet-body .service-sheet p { font-size: .86rem; line-height: 1.5; color: var(--muted); }
+
+  .mobile-poi-sheet-backdrop {
+    display: none;
+    position: fixed; inset: 0;
+    z-index: 39000;
+    background: rgba(15, 40, 50, .28);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
+  }
+  .mobile-poi-sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+
+  @media (max-width: 1220px) {
+    .mobile-poi-sheet { display: block; }
+    .mobile-poi-sheet-backdrop { display: block; }
+  }
+</style>
+
 </head>
 <body>
   <div class="page">
@@ -3572,6 +3642,13 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="mobile-poi-sheet" id="mobile-poi-sheet" aria-hidden="true">
+    <div class="sheet-handle"></div>
+    <button type="button" class="sheet-close" id="mobile-poi-sheet-close" aria-label="Fermer">✕</button>
+    <div class="sheet-body" id="mobile-poi-sheet-body"></div>
+  </div>
+  <div class="mobile-poi-sheet-backdrop" id="mobile-poi-sheet-backdrop"></div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script>
@@ -5066,6 +5143,35 @@
     const serviceLayer = L.layerGroup().addTo(map);
     const serviceMarkerById = new Map();
     let servicesVisible = true;
+    // Panneau d'info mobile : remplace la bulle Leaflet sur mobile pour ne
+    // plus jamais être coupé par la petite hauteur de la carte fixe.
+    const mobileSheet = document.getElementById('mobile-poi-sheet');
+    const mobileSheetBody = document.getElementById('mobile-poi-sheet-body');
+    const mobileSheetBackdrop = document.getElementById('mobile-poi-sheet-backdrop');
+    const mobileSheetCloseBtn = document.getElementById('mobile-poi-sheet-close');
+    let mobileSheetOpenFor = null;
+
+    function openMobileSheet(html, key) {
+      mobileSheetBody.innerHTML = html;
+      mobileSheet.classList.add('open');
+      mobileSheet.setAttribute('aria-hidden', 'false');
+      mobileSheetBackdrop.classList.add('open');
+      mobileSheetOpenFor = key;
+    }
+
+    function closeMobileSheet() {
+      mobileSheet.classList.remove('open');
+      mobileSheet.setAttribute('aria-hidden', 'true');
+      mobileSheetBackdrop.classList.remove('open');
+      mobileSheetOpenFor = null;
+    }
+
+    mobileSheetCloseBtn?.addEventListener('click', closeMobileSheet);
+    mobileSheetBackdrop?.addEventListener('click', closeMobileSheet);
+    window.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeMobileSheet();
+    });
+
     let popupActionSequence = 0;
     let activeMapPopup = null;
     // Marqueur dont la bulle est ouverte OU en cours d'ouverture.
@@ -5139,6 +5245,18 @@
       marker.on('click', event => {
         if (event?.originalEvent) L.DomEvent.stopPropagation(event.originalEvent);
         if (isDuplicateTapClick(marker)) return;
+
+        const isMobile = window.matchMedia('(max-width: 1220px)').matches;
+
+        if (isMobile) {
+          if (mobileSheetOpenFor === service.id) { closeMobileSheet(); return; }
+          suppressAutomaticMapFitUntil = Date.now() + 2200;
+          focusDay(service.day, false, { fitMap: false });
+          map.stop();
+          map.flyTo(service.coords, Math.max(map.getZoom(), 17), { duration: .72, easeLinearity: .22 });
+          openMobileSheet(serviceSheetHtml(service), service.id);
+          return;
+        }
 
         if (popupToggleMarker === marker || marker.isPopupOpen()) {
           closePopupAndRestoreMap(marker);
@@ -5316,6 +5434,32 @@
         </div>`;
     }
 
+    function sheetHtml(poi) {
+      return `
+        <div class="sheet-image">
+          <img src="${poi.image}" alt="${poi.name}" onerror="this.onerror=null;this.src='${fallbackDataUri(poi.name)}'">
+          <span class="sheet-badge" style="--popup-color:${COLORS[poi.day]}">J${poi.day}.${poi.order}</span>
+        </div>
+        <div class="sheet-copy">
+          <h4>${poi.name}</h4>
+          <p>${poi.intro}</p>
+          <ul>${poi.activities.map(item => `<li>${item}</li>`).join('')}</ul>
+        </div>`;
+    }
+
+    function serviceSheetHtml(service) {
+      return `
+        <div class="service-sheet">
+          <h4>${service.icon} ${service.name}</h4>
+          <span class="service-price">${service.price}</span>
+          <p>${service.text}</p>
+          <a href="${service.url}" target="_blank" rel="noopener">Site / réservation ↗</a>
+        </div>`;
+    }
+
+    // Panneau d'info mobile : remplace la bulle Leaflet sur mobile pour ne
+    // plus jamais être coupé par la petite hauteur de la carte fixe.
+
     allPois.forEach(poi => {
       const marker = L.marker(poi.coords, { icon: markerIcon(poi.day, poi.type), riseOnHover: true, keyboard: true });
       marker.bindPopup(popupHtml(poi), { closeButton: true, maxWidth: 290, autoPan: false, keepInView: false, closeOnClick: false, autoPanPadding: [45, 45] });
@@ -5328,6 +5472,15 @@
         if (event?.originalEvent) L.DomEvent.stopPropagation(event.originalEvent);
         if (isDuplicateTapClick(marker)) return;
 
+        const isMobile = window.matchMedia('(max-width: 1220px)').matches;
+
+        if (isMobile) {
+          if (mobileSheetOpenFor === poi.id) { closeMobileSheet(); return; }
+          suppressAutomaticMapFitUntil = Date.now() + 1800;
+          setActivePoi(poi.id, { pan: true, scroll: false, openPopup: true });
+          return;
+        }
+
         if (popupToggleMarker === marker || marker.isPopupOpen()) {
           closePopupAndRestoreMap(marker);
           return;
@@ -5339,10 +5492,9 @@
         }
         popupToggleMarker = marker;
 
-        const compact = window.matchMedia('(max-width: 1220px)').matches;
         const popupToken = ++popupActionSequence;
         suppressAutomaticMapFitUntil = Date.now() + 1800;
-        setActivePoi(poi.id, { pan: true, scroll: !compact, openPopup: true, popupToken });
+        setActivePoi(poi.id, { pan: true, scroll: true, openPopup: true, popupToken });
       });
     });
 
@@ -5410,21 +5562,27 @@
       });
       document.querySelectorAll('.poi-card').forEach(el => el.classList.toggle('active', el.dataset.poi === poiId));
 
-      const requestedPopupToken = openPopup ? (popupToken ?? ++popupActionSequence) : popupActionSequence;
+      const isMobile = window.matchMedia('(max-width: 1220px)').matches;
 
-      if (openPopup) {
+      // Sur mobile, l'info s'affiche dans le panneau du bas (jamais coupé),
+      // pas dans la bulle Leaflet contrainte par la petite carte.
+      if (openPopup && isMobile) {
+        openMobileSheet(sheetHtml(poi), poi.id);
+      } else if (openPopup) {
         if (popupToggleMarker && popupToggleMarker !== marker) {
           popupToggleMarker.closePopup();
         }
         popupToggleMarker = marker;
       }
 
+      const requestedPopupToken = (openPopup && !isMobile) ? (popupToken ?? ++popupActionSequence) : popupActionSequence;
+
       if (pan) {
         suppressAutomaticMapFitUntil = Math.max(suppressAutomaticMapFitUntil, Date.now() + 1800);
         map.stop();
-        if (openPopup) openPopupAfterMapMove(marker, requestedPopupToken, 900);
+        if (openPopup && !isMobile) openPopupAfterMapMove(marker, requestedPopupToken, 900);
         map.flyTo(poi.coords, 17, { duration: .72, easeLinearity: .22 });
-      } else if (openPopup) {
+      } else if (openPopup && !isMobile) {
         openPopupExpanded(marker, requestedPopupToken);
       }
       if (scroll) {
