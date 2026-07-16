@@ -85,6 +85,10 @@
     background: var(--line); cursor: pointer; transition: width .15s ease, background .15s ease;
   }
   .sheet-dot.active { width: 18px; background: var(--sea); }
+  .day-card > .day-video {
+    margin: 0;
+    border-bottom: 1px solid var(--line);
+  }
 </style>
 </head><body><div class="page"><header class="topbar"><div class="brand"><div class="brand-mark">⌖</div><div class="brand-copy"><strong>Roadbook Zadar</strong><span>Zadar · Murter · Dugi Otok — 24 juillet au 2 août 2026</span></div></div><div class="top-actions"><div class="mobile-switch" aria-label="Changer de vue"><button type="button" id="show-program" class="active">Programme</button><button type="button" id="show-map">Carte</button></div><button type="button" class="btn desktop-only" id="collapse-days">Tout replier</button><button type="button" class="btn" id="print-page">Imprimer</button></div></header><nav class="mobile-daybar" id="mobile-daybar" aria-label="Navigation rapide par journée"><div class="mobile-daybar-title">Jours</div><div class="mobile-daybar-scroll" id="day-nav"></div></nav><div class="layout"><main class="itinerary" id="program-view"><section class="hero panel"><span class="eyebrow">Roadbook · Dalmatie du Nord</span><h1>10 jours entre Zadar, Murter et Dugi Otok</h1><p>Un séjour équilibré entre îles, randonnée, vélo, kayak, snorkeling et villages dalmates, organisé autour de deux bases de vie, avec Zadar en ouverture et pour la dernière nuit.</p><div class="stay-route" aria-label="Les étapes d’hébergement du séjour"><div class="stay-stop"><span>01</span><small>Base principale</small><strong>Zadar</strong><em>5 nuits</em><p class="stay-plan">J1 visite · J2 vélo · J3 trail · J4 kayak · J5 Murter</p></div><div class="stay-arrow" aria-hidden="true">→</div><div class="stay-stop"><span>02</span><small>Parenthèse insulaire</small><strong>Dugi Otok</strong><em>3 nuits</em><p class="stay-plan">J6 arrivée + Dugi Nord · J7 Dugi Sud trail + Dragon’s Eye · J8 Kornati</p></div><div class="stay-arrow" aria-hidden="true">→</div><div class="stay-stop"><span>03</span><small>Dernière nuit</small><strong>Zadar</strong><em>1 nuit</em><p class="stay-plan">J9 retour + Nin ou plage · J10 départ</p></div></div><div class="alert"><span>⚠️</span><div><strong>À vérifier avant chaque journée :</strong> vent et état de la mer pour le kayak, horaires Jadrolinija, ouverture des prestataires, départ exact des excursions et restrictions d’accès aux parcs. Les tracés de la carte sont des repères visuels et non des traces GPS de navigation. Tarifs et horaires vérifiés le 15 juillet 2026 ; disponibilité à confirmer avant réservation.</div></div></section><section class="booking-tools panel" id="booking-tools"></section><section class="day-switcher" id="day-switcher"></section><section class="days" id="days"></section><section class="regional-suggestions panel" id="regional-suggestions"></section><footer class="footer panel">
 Photos chargées depuis Wikimedia Commons avec attribution dans les popups. Fond cartographique OpenStreetMap/CARTO ; les liens de lieux s’ouvrent désormais dans Google Maps. Tarifs vérifiés le 15 juillet 2026 ; les horaires, menus, disponibilités et conditions nautiques peuvent encore évoluer.
@@ -1884,10 +1888,10 @@ Photos chargées depuis Wikimedia Commons avec attribution dans les popups. Fond
                 <div class="meta"><small>Tracé</small><strong>${day.routeMode}</strong></div>
               </div>
             </header>
+            ${renderDayVideo(day)}
             <div class="day-body">
               <div class="timeline">${day.schedule.map(row => `<div class="timeline-row"><time>${row[0]}</time><span>${row[1]}</span></div>`).join('')}</div>
               <div class="poi-list">${pois}</div>
-              ${renderDayVideo(day)}
               <div class="extras">
                 ${accordionBlock('☀️', 'Conseils pratiques de la journée', 'Repas, baignade et vérification utile', `
                   <div class="day-advice-grid">
