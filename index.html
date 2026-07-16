@@ -3497,25 +3497,58 @@
     border-radius: 18px 18px 0 0;
     box-shadow: 0 -14px 44px rgba(15, 40, 50, .32);
     max-height: 68svh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
+    isolation: isolate;
     transform: translateY(100%);
     transition: transform .25s ease;
-    padding-bottom: max(14px, env(safe-area-inset-bottom, 0px));
   }
   .mobile-poi-sheet.open { transform: translateY(0); }
   .sheet-handle {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    z-index: 6;
     width: 40px; height: 4px; border-radius: 2px;
-    background: var(--line);
-    margin: 10px auto 2px;
+    background: rgba(255,255,255,.92);
+    box-shadow: 0 1px 4px rgba(15,40,50,.28);
+    margin: 0;
+    transform: translateX(-50%);
   }
   .sheet-close {
-    position: absolute; top: 8px; right: 10px;
-    width: 30px; height: 30px; border-radius: 50%;
-    border: none; background: var(--sea-soft); color: var(--sea-dark);
-    font-size: .95rem; line-height: 1; cursor: pointer;
+    position: absolute;
+    top: 12px;
+    right: max(12px, env(safe-area-inset-right, 0px));
+    z-index: 7;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 1px solid rgba(15,58,72,.14);
+    border-radius: 50%;
+    background: rgba(255,255,255,.96);
+    color: var(--sea-dark);
+    box-shadow: 0 5px 16px rgba(15,40,50,.24);
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1;
+    cursor: pointer;
   }
-  .sheet-body .sheet-image { position: relative; width: 100%; height: 190px; overflow: hidden; }
+  .sheet-body {
+    max-height: 68svh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: max(14px, env(safe-area-inset-bottom, 0px));
+  }
+  .sheet-body .sheet-image {
+    position: relative;
+    width: 100%;
+    height: clamp(180px, 28svh, 230px);
+    overflow: hidden;
+    border-radius: 18px 18px 0 0;
+  }
   .sheet-body .sheet-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .sheet-body .sheet-badge {
     position: absolute; left: 12px; bottom: 10px;
@@ -3527,7 +3560,7 @@
   .sheet-body .sheet-copy p { margin: 0 0 10px; font-size: .86rem; line-height: 1.5; color: var(--muted); }
   .sheet-body .sheet-copy ul { margin: 0 0 4px; padding-left: 18px; font-size: .82rem; line-height: 1.5; }
   .sheet-body .sheet-copy a { color: var(--sea); font-weight: 700; }
-  .sheet-body .service-sheet { padding: 18px; }
+  .sheet-body .service-sheet { padding: 58px 18px 18px; }
   .sheet-body .service-sheet h4 { margin: 0 0 8px; font-size: 1.05rem; }
   .sheet-body .service-sheet .service-price {
     display: inline-block; margin-bottom: 8px; padding: 5px 10px;
@@ -3643,7 +3676,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <div class="mobile-poi-sheet" id="mobile-poi-sheet" aria-hidden="true">
+  <div class="mobile-poi-sheet" id="mobile-poi-sheet" role="dialog" aria-modal="true" aria-label="Informations sur le lieu" aria-hidden="true">
     <div class="sheet-handle"></div>
     <button type="button" class="sheet-close" id="mobile-poi-sheet-close" aria-label="Fermer">✕</button>
     <div class="sheet-body" id="mobile-poi-sheet-body"></div>
@@ -5153,6 +5186,7 @@
 
     function openMobileSheet(html, key) {
       mobileSheetBody.innerHTML = html;
+      mobileSheetBody.scrollTop = 0;
       mobileSheet.classList.add('open');
       mobileSheet.setAttribute('aria-hidden', 'false');
       mobileSheetBackdrop.classList.add('open');
