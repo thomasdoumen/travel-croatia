@@ -5028,7 +5028,13 @@
       zoom: 8,
       layers: [baseLight],
       zoomControl: true,
-      preferCanvas: true
+      preferCanvas: true,
+      // Sur mobile, le handler "tap" de Leaflet peut déclencher un clic
+      // fantôme en plus du clic natif (vieux correctif iOS devenu inutile
+      // avec le viewport actuel). Avec notre logique de bascule
+      // ouvrir/fermer, ce doublon annulait l'ouverture de la bulle
+      // (ouverture puis fermeture immédiate). On le désactive.
+      tap: false
     });
     map.zoomControl.setPosition('topright');
     L.control.layers({ 'Carte claire': baseLight, 'Topographique': baseTopo }, null, { position: 'topright', collapsed: true }).addTo(map);
@@ -5092,6 +5098,22 @@
       window.requestAnimationFrame(() => map.invalidateSize({ pan: false }));
     }
 
+    // Filet de sécurité supplémentaire : sur certains navigateurs mobiles,
+    // un même appui peut encore déclencher deux événements 'click' très
+    // rapprochés. Avec une logique d'ouverture/fermeture en bascule, ce
+    // doublon annulerait l'ouverture (ouvre puis referme aussitôt). On
+    // ignore donc un second clic sur le même marqueur survenant à moins de
+    // 350 ms du précédent.
+    let lastMarkerClickAt = 0;
+    let lastClickedMarker = null;
+    function isDuplicateTapClick(marker) {
+      const now = Date.now();
+      const isDuplicate = marker === lastClickedMarker && (now - lastMarkerClickAt) < 350;
+      lastClickedMarker = marker;
+      lastMarkerClickAt = now;
+      return isDuplicate;
+    }
+
     function serviceIcon(service) {
       return L.divIcon({
         className: 'service-marker-wrap',
@@ -5116,6 +5138,7 @@
 
       marker.on('click', event => {
         if (event?.originalEvent) L.DomEvent.stopPropagation(event.originalEvent);
+        if (isDuplicateTapClick(marker)) return;
 
         if (popupToggleMarker === marker || marker.isPopupOpen()) {
           closePopupAndRestoreMap(marker);
@@ -5303,6 +5326,7 @@
 
       marker.on('click', event => {
         if (event?.originalEvent) L.DomEvent.stopPropagation(event.originalEvent);
+        if (isDuplicateTapClick(marker)) return;
 
         if (popupToggleMarker === marker || marker.isPopupOpen()) {
           closePopupAndRestoreMap(marker);
